@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FineMIS", "FineMIS\FineMIS.csproj", "{CDC844E0-F2F4-4008-85D2-1D7F776A14D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FineMIS.Tests", "FineMIS.Tests\FineMIS.Tests.csproj", "{0CAA1A0B-BBA2-4C81-927F-D128802CF224}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FineUI", "..\FineUI\FineUI\FineUI.csproj", "{0F8BF1F6-DDC2-43DA-BB0B-416CC287AC1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDC844E0-F2F4-4008-85D2-1D7F776A14D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDC844E0-F2F4-4008-85D2-1D7F776A14D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDC844E0-F2F4-4008-85D2-1D7F776A14D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDC844E0-F2F4-4008-85D2-1D7F776A14D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CAA1A0B-BBA2-4C81-927F-D128802CF224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CAA1A0B-BBA2-4C81-927F-D128802CF224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CAA1A0B-BBA2-4C81-927F-D128802CF224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CAA1A0B-BBA2-4C81-927F-D128802CF224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F8BF1F6-DDC2-43DA-BB0B-416CC287AC1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F8BF1F6-DDC2-43DA-BB0B-416CC287AC1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F8BF1F6-DDC2-43DA-BB0B-416CC287AC1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F8BF1F6-DDC2-43DA-BB0B-416CC287AC1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
