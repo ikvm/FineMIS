@@ -1,11 +1,12 @@
-<#@ template language="C#v3.5" hostspecific="True" #>
+﻿<#@ template debug="true" language="C#" hostspecific="true" #>
 <#@ assembly name="EnvDTE" #>
 <#@ assembly name="System.Core.dll" #>
-<#@ assembly name="System.Data" #>
-<#@ assembly name="System.Xml" #>
-<#@ assembly name="System.Configuration" #>
-<#@ assembly name="System.Windows.Forms" #>
+<#@ assembly name="System.Data.dll" #>
+<#@ assembly name="System.Xml.dll" #>
+<#@ assembly name="System.Configuration.dll" #>
+<#@ assembly name="System.Windows.Forms.dll" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Configuration" #>
 <#@ import namespace="System.Data" #>
 <#@ import namespace="System.Data.SqlClient" #>
 <#@ import namespace="System.Data.Common" #>
@@ -15,7 +16,6 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Text.RegularExpressions" #>
-<#@ import namespace="System.Configuration" #>
 <#@ import namespace="System.Windows.Forms" #>
 <#+
 
@@ -87,9 +87,10 @@ string ClassSuffix = "";
 string SchemaName = null;
 bool IncludeViews = false;
 bool GenerateOperations = false;
-bool GenerateCommon = true;
+bool GenerateCommon = false;
 bool GeneratePocos = true;
 bool TrackModifiedColumns = false;
+string CommonColumns = "";
 
 
 public class Table

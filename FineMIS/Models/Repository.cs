@@ -1,4 +1,12 @@
-﻿using System;
+﻿/************************************************************************************************************
+ * 
+ * the extensions for PetaPoco
+ *       
+ * v1.0.0    updated by wz @2016-03-23
+ * 
+ ************************************************************************************************************/
+
+using System;
 using System.Data;
 
 namespace PetaPoco
@@ -6,7 +14,7 @@ namespace PetaPoco
     /// <summary>
     ///  a thread safe and automatic maintain transaction internally database
     /// </summary>
-    public class Repository : Database
+    public partial class Repository : Database
     {
         [ThreadStatic]
         private static Repository _instance;
@@ -23,7 +31,7 @@ namespace PetaPoco
             _Contruct();
         }
 
-        private void _Contruct() { }
+        partial void _Contruct();
 
         public interface IFactory
         {
@@ -32,16 +40,7 @@ namespace PetaPoco
 
         public static IFactory Factory { get; set; }
 
-        public static Repository Instance
-        {
-            get
-            {
-                if (_instance != null)
-                    return _instance;
-
-                return Factory != null ? Factory.GetInstance() : new Repository();
-            }
-        }
+        public static Repository Instance => _instance ?? (Factory != null ? Factory.GetInstance() : new Repository());
 
         public override void OnBeginTransaction()
         {

@@ -2,14 +2,12 @@
 <#
 	// Settings
     ConnectionStringName = "";			// Uses last connection string in config if not specified
-    Namespace = "";
-    RepoName = "";
-    GenerateOperations = true;
+    Namespace = "FineMIS";
 	GeneratePocos = true;
-	GenerateCommon = true;
 	ClassPrefix = "";
 	ClassSuffix = "";
 	TrackModifiedColumns = false;
+	CommonColumns = "Id,CreateBy,CreateDate,LastUpdateBy,LastUpdateDate,Active,UserBelongTo,CmpyBelongTo";
 
     // Read schema
 	var tables = LoadTables();

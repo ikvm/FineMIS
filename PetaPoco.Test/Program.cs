@@ -11,9 +11,8 @@ namespace PetaPoco.Test
     {
         static void Main(string[] args)
         {
-            var sql = Sql.Builder.Append("SET a = 1, b = 2");
-            var fsql = Sql.Builder.Append("SET c = 3, d = 4").Where("e = 5").Where("f = 6");
-            Console.WriteLine(sql.Append(fsql.SQL));
+            var sql = Sql.Builder.Where("1=1").Where("2=2").OrderBy("3").Where("4=4");
+            Console.WriteLine(Sql.Builder.SQL);
 
         }
     }
