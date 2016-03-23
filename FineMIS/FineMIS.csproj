@@ -71,6 +71,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="extjs_builder\build.bat" />
+    <Content Include="extjs_builder\build_only_js_css.bat" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -79,6 +81,70 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="extjs_builder\js\F\extender.js" />
+    <Content Include="extjs_builder\js\F\F.ajax.js" />
+    <Content Include="extjs_builder\js\F\F.format.js" />
+    <Content Include="extjs_builder\js\F\F.simulateTree.js" />
+    <Content Include="extjs_builder\js\F\F.util.js" />
+    <Content Include="extjs_builder\js\F\F.wnd.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-en.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-pt_BR.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-ru.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-tr.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-zh_CN.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-zh_TW.js" />
+    <Content Include="extjs_builder\js\lib\Base64.js" />
+    <Content Include="extjs_builder\js\lib\json2.js" />
+    <Content Include="extjs_builder\js\ux\CheckColumn.js" />
+    <Content Include="extjs_builder\js\ux\FormViewport.js" />
+    <Content Include="extjs_builder\js\ux\Notification.js" />
+    <Content Include="extjs_builder\js\ux\SimplePagingToolbar.js" />
+    <Content Include="extjs_builder\js\ux\TabCloseMenu.js" />
+    <Content Include="extjs_builder\js\修改ext-all.js（为了支持 IE11）.txt" />
+    <Content Include="extjs_builder\res\access.css" />
+    <Content Include="extjs_builder\res\classic.css" />
+    <Content Include="extjs_builder\res\FineUI.css" />
+    <Content Include="extjs_builder\res\gray.css" />
+    <Content Include="extjs_builder\res\Grid.css" />
+    <Content Include="extjs_builder\res\neptune.css" />
+    <Content Include="extjs_builder\res\Notification.css" />
+    <Content Include="extjs_builder\res\PageLoading.css" />
+    <Content Include="extjs_builder\res\Tree.css" />
+    <Content Include="res\css\common.css" />
+    <Content Include="res\css\default.css" />
+    <Content Include="res\google-code-prettify\lang-apollo.js" />
+    <Content Include="res\google-code-prettify\lang-basic.js" />
+    <Content Include="res\google-code-prettify\lang-clj.js" />
+    <Content Include="res\google-code-prettify\lang-css.js" />
+    <Content Include="res\google-code-prettify\lang-dart.js" />
+    <Content Include="res\google-code-prettify\lang-erlang.js" />
+    <Content Include="res\google-code-prettify\lang-go.js" />
+    <Content Include="res\google-code-prettify\lang-hs.js" />
+    <Content Include="res\google-code-prettify\lang-lisp.js" />
+    <Content Include="res\google-code-prettify\lang-llvm.js" />
+    <Content Include="res\google-code-prettify\lang-lua.js" />
+    <Content Include="res\google-code-prettify\lang-matlab.js" />
+    <Content Include="res\google-code-prettify\lang-ml.js" />
+    <Content Include="res\google-code-prettify\lang-mumps.js" />
+    <Content Include="res\google-code-prettify\lang-n.js" />
+    <Content Include="res\google-code-prettify\lang-pascal.js" />
+    <Content Include="res\google-code-prettify\lang-proto.js" />
+    <Content Include="res\google-code-prettify\lang-r.js" />
+    <Content Include="res\google-code-prettify\lang-rd.js" />
+    <Content Include="res\google-code-prettify\lang-scala.js" />
+    <Content Include="res\google-code-prettify\lang-sql.js" />
+    <Content Include="res\google-code-prettify\lang-tcl.js" />
+    <Content Include="res\google-code-prettify\lang-tex.js" />
+    <Content Include="res\google-code-prettify\lang-vb.js" />
+    <Content Include="res\google-code-prettify\lang-vhdl.js" />
+    <Content Include="res\google-code-prettify\lang-wiki.js" />
+    <Content Include="res\google-code-prettify\lang-xq.js" />
+    <Content Include="res\google-code-prettify\lang-yaml.js" />
+    <Content Include="res\google-code-prettify\prettify.css" />
+    <Content Include="res\google-code-prettify\prettify.js" />
+    <Content Include="res\google-code-prettify\run_prettify.js" />
+    <Content Include="res\js\jquery.js" />
+    <Content Include="res\js\jquery.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +154,10 @@
     <ProjectReference Include="..\..\FineUI\FineUI\FineUI.csproj">
       <Project>{0f8bf1f6-ddc2-43da-bb0b-416cc287ac1b}</Project>
       <Name>FineUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PetaPoco\PetaPoco\PetaPoco.csproj">
+      <Project>{33699753-151d-4100-8f12-9ae1aeb5c5bd}</Project>
+      <Name>PetaPoco</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
