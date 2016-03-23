@@ -7,10 +7,12 @@ namespace FineMIS
 {
     public class Current
     {
-        public static string UserName { get; set; }
+        public static string UserName => "user";
 
-        public static long UserBelongTo { get; set; }
+        public static string Roles => "Admin";
 
-        public static long CmpyBelongTo { get; set; }
+        public static long UserBelongTo => 0;
+
+        public static long CmpyBelongTo => 0;
     }
 }
