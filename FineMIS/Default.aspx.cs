@@ -13,11 +13,12 @@ namespace FineMIS
         protected void Page_Init(object sender, EventArgs e)
         {
             // 用户可见的菜单列表
-            List<Menu> menus = ResolveUserMenuList();
+            var menus = ResolveUserMenuList();
             if (menus.Count == 0)
             {
                 // todo
                 // 返回未授权页面
+                Response.Redirect("401.aspx");
                 Response.Write("系统管理员尚未给你配置菜单！");
                 Response.End();
 
@@ -31,18 +32,18 @@ namespace FineMIS
 
             if (Settings.MenuStyle == "accordion")
             {
-                Accordion accordionMenu = InitAccordionMenu(menus);
+                var accordionMenu = InitAccordionMenu(menus);
                 ids.Add("treeMenu", accordionMenu.ClientID);
                 ids.Add("menuType", "accordion");
             }
             else
             {
-                Tree treeMenu = InitTreeMenu(menus);
+                var treeMenu = InitTreeMenu(menus);
                 ids.Add("treeMenu", treeMenu.ClientID);
                 ids.Add("menuType", "menu");
             }
 
-            string idsScriptStr = string.Format("window.DATA={0};", ids.ToString(Formatting.None));
+            var idsScriptStr = $"window.DATA={ids.ToString(Formatting.None)};";
             PageContext.RegisterStartupScript(idsScriptStr);
 
             Title = Settings.Title;
@@ -55,8 +56,8 @@ namespace FineMIS
 
         private JObject GetClientIds(params ControlBase[] ctrls)
         {
-            JObject jo = new JObject();
-            foreach (ControlBase ctrl in ctrls)
+            var jo = new JObject();
+            foreach (var ctrl in ctrls)
             {
                 jo.Add(ctrl.ID, ctrl.ClientID);
             }
@@ -73,7 +74,7 @@ namespace FineMIS
         /// <returns></returns>
         private Accordion InitAccordionMenu(List<Menu> menus)
         {
-            Accordion accordionMenu = new Accordion
+            var accordionMenu = new Accordion
             {
                 ID = "accordionMenu",
                 EnableFill = true,
@@ -85,7 +86,7 @@ namespace FineMIS
 
             foreach (var menu in menus.Where(m => m.ParentId == 0))
             {
-                AccordionPane accordionPane = new AccordionPane
+                var accordionPane = new AccordionPane
                 {
                     Title = menu.Name,
                     Layout = Layout.Fit,
@@ -93,7 +94,7 @@ namespace FineMIS
                     BodyPadding = "0 0 0 0"
                 };
 
-                Tree innerTree = new Tree
+                var innerTree = new Tree
                 {
                     EnableArrows = true,
                     ShowBorder = false,
@@ -103,7 +104,7 @@ namespace FineMIS
                 };
 
                 // 生成树
-                int nodeCount = ResolveMenuTree(menus, menu, innerTree.Nodes);
+                var nodeCount = ResolveMenuTree(menus, menu, innerTree.Nodes);
                 if (nodeCount > 0)
                 {
                     accordionPane.Items.Add(innerTree);
@@ -125,7 +126,7 @@ namespace FineMIS
         /// <returns></returns>
         private Tree InitTreeMenu(List<Menu> menus)
         {
-            Tree treeMenu = new Tree
+            var treeMenu = new Tree
             {
                 ID = "treeMenu",
                 EnableArrows = true,
@@ -154,8 +155,8 @@ namespace FineMIS
         /// <param name="nodes"></param>
         private int ResolveMenuTree(List<Menu> menus, Menu parentMenu, TreeNodeCollection nodes)
         {
-            int count = 0;
-            foreach (var menu in menus.Where(m => m.ParentId == (parentMenu == null ? 0 : parentMenu.Id)))
+            var count = 0;
+            foreach (var menu in menus.Where(m => m.ParentId == (parentMenu?.Id ?? 0)))
             {
                 var node = new TreeNode();
                 nodes.Add(node);
@@ -207,12 +208,12 @@ namespace FineMIS
         private List<Menu> ResolveUserMenuList()
         {
             // 当前登陆用户的权限列表
-            List<string> roles = Current.Roles.Split(',').ToList();
+            var roles = Current.Roles.Split(',').ToList();
 
             // 当前用户所属角色可用的菜单列表
-            List<Menu> menus = new List<Menu>();
+            var menus = new List<Menu>();
 
-            foreach (Menu menu in Menu.Menus)
+            foreach (var menu in Menu.Menus)
             {
                 // 如果此菜单不属于任何模块
                 if (string.IsNullOrEmpty(menu.Roles))

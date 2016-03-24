@@ -1,0 +1,145 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Page.master.cs" Inherits="FineMIS.Pages.Page" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="http://cdn.bootcss.com/normalize/3.0.3/normalize.css" rel="stylesheet" />
+    <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        .marginr {
+            margin-right: 5px;
+        }
+
+        .formitem {
+            margin-bottom: 5px;
+        }
+
+        .x-grid-group-hd.x-grid-group-hd-not-collapsible {
+            padding: 0;
+        }
+
+        .x-grid-row-summary .x-grid-cell-inner {
+            font-weight: bold;
+            color: red;
+        }
+
+        .x-grid-row .x-grid-td {
+            height: 22px;
+            line-height: 22px;
+        }
+
+        .x-btn-icon-el.x-btn-glyph {
+            color: #ffffff;
+        }
+
+        /* todo arrange css class */
+        .red {
+            background-color: #D01919;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .orange {
+            background-color: #F26202;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .yellow {
+            background-color: #EAAE00;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .olive {
+            background-color: #A7BD0D;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .green {
+            background-color: #16AB39;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .teal {
+            background-color: #009C95;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .blue {
+            background-color: #1678C2;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .violet {
+            background-color: #5829BB;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .purple {
+            background-color: #9627BA;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .pink {
+            background-color: #E61A8D;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .brown {
+            background-color: #975B33;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .gray {
+            background-color: #838383;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .black {
+            background-color: #27292A;
+            color: #fff;
+            padding: 2px;
+            border-radius: 2px;
+        }
+    </style>
+
+    <asp:ContentPlaceHolder ID="Head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <f:PageManager ID="PageManager1" AutoSizePanelID="MainPanel" runat="server" />
+        <f:CPHConnector ID="CPHConnector" runat="server">
+            <asp:ContentPlaceHolder ID="Main" runat="server">
+            </asp:ContentPlaceHolder>
+        </f:CPHConnector>
+    </form>
+    <asp:ContentPlaceHolder ID="Foot" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>

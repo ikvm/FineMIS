@@ -1,21 +1,33 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="FineMIS.Default" %>
 
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html class="no-js">
 <head runat="server">
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>FineMIS</title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="icon" type="image/png" href="res/images/favicon.png">
+
     <style>
         .topbar {
             background: url(res/images/logo.png) no-repeat 10px;
-            background-size: 120px;
+            background-size: 100px;
         }
 
-            .topbar.f-toolbar {
+            /*.topbar.f-toolbar {
                 border-top-color: inherit;
                 padding: 3px 12px;
-            }
+            }*/
 
         .bottombar .x-toolbar-text a {
             color: #000;
@@ -65,15 +77,11 @@
                         <f:Toolbar ID="topRegionToolbar" Position="Bottom" CssClass="topbar" runat="server">
                             <Items>
                                 <f:ToolbarFill ID="ToolbarFill" runat="server" />
-                                <f:Label runat="server" Width="32px" Text=""></f:Label>
-                                <f:ToolbarText ID="txtUser" runat="server">
-                                </f:ToolbarText>
-                                <f:Button ID="btnRefresh" runat="server" Icon="Reload" Text="刷新" ToolTip="刷新主区域内容" EnablePostBack="false">
-                                </f:Button>
-                                <f:Button ID="btnHelp" EnablePostBack="false" Icon="Help" Text="帮助" runat="server">
-                                </f:Button>
-                                <f:Button ID="btnExit" runat="server" Icon="UserRed" Text="退出" ConfirmText="确定退出系统?">
-                                </f:Button>
+                                <f:ToolbarText ID="txtUser" runat="server"></f:ToolbarText>
+                                <f:Label runat="server" Width="4px" Text=""></f:Label>
+                                <f:Button ID="btnRefresh" runat="server" Icon="Reload" Text="刷新" ToolTip="刷新主区域内容" EnablePostBack="false"></f:Button>
+                                <f:Button ID="btnHelp" EnablePostBack="false" Icon="Help" Text="帮助" runat="server"></f:Button>
+                                <f:Button ID="btnExit" runat="server" Icon="UserRed" Text="退出" ConfirmText="确定退出系统?"></f:Button>
                             </Items>
                         </f:Toolbar>
                     </Toolbars>
@@ -96,8 +104,7 @@
                     <Items>
                         <f:TabStrip ID="mainTabStrip" EnableTabCloseMenu="true" ShowBorder="false" runat="server" AutoPostBack="true">
                             <Tabs>
-                                <f:Tab ID="Tab1" Title="首页" EnableIFrame="true" IFrameUrl="" Icon="House" runat="server">
-                                </f:Tab>
+                                <f:Tab ID="Tab1" Title="首页" EnableIFrame="true" IFrameUrl="~/Index.aspx" Icon="House" runat="server"></f:Tab>
                             </Tabs>
                         </f:TabStrip>
                     </Items>
