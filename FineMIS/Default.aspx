@@ -104,7 +104,7 @@
                     <Items>
                         <f:TabStrip ID="mainTabStrip" EnableTabCloseMenu="true" ShowBorder="false" runat="server" AutoPostBack="true">
                             <Tabs>
-                                <f:Tab ID="Tab1" Title="首页" EnableIFrame="true" IFrameUrl="~/Index.aspx" Icon="House" runat="server"></f:Tab>
+                                <f:Tab ID="Tab1" Title="首页" EnableIFrame="true" IFrameUrl="http://localhost:64357/Index.aspx" Icon="House" runat="server"></f:Tab>
                             </Tabs>
                         </f:TabStrip>
                     </Items>

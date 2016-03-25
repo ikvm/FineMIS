@@ -15,7 +15,7 @@ namespace FineMIS
         private static void Refresh()
         {
             MenuStyle = "accordion";
-            Title = "电子政务平台";
+            Title = "通用管理系统";
             Theme = "Neptune";
         }
 

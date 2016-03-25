@@ -10,11 +10,10 @@ using FineUI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
-using ColumnAttribute = System.ComponentModel.DataAnnotations.Schema.ColumnAttribute;
 
 namespace FineMIS.Pages
 {
-    public class PageBase : Page
+    public class PageBase : System.Web.UI.Page
     {
         #region 只读静态变量
 
@@ -93,8 +92,8 @@ namespace FineMIS.Pages
         {
             List<int> roleIDs = new List<int>();
 
-            if (!Page.User.Identity.IsAuthenticated) return roleIDs;
-            var ticket = ((FormsIdentity)Page.User.Identity).Ticket;
+            if (!User.Identity.IsAuthenticated) return roleIDs;
+            var ticket = ((FormsIdentity)User.Identity).Ticket;
             var userData = ticket.UserData;
 
             roleIDs.AddRange(from roleId in userData.Split(',') where !string.IsNullOrEmpty(roleId) select Convert.ToInt32(roleId));
@@ -108,7 +107,7 @@ namespace FineMIS.Pages
         /// <returns></returns>
         protected string GetIdentityName()
         {
-            return Page.User.Identity.IsAuthenticated ? Page.User.Identity.Name : string.Empty;
+            return User.Identity.IsAuthenticated ? User.Identity.Name : string.Empty;
         }
 
         /// <summary>
@@ -134,11 +133,13 @@ namespace FineMIS.Pages
             HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hashTicket)
             {
                 HttpOnly = true,
+
+                // 1. 关闭浏览器即删除（Session Cookie）：DateTime.MinValue
+                // 2. 指定时间后删除：大于 DateTime.Now 的某个值
+                // 3. 删除Cookie：小于 DateTime.Now 的某个值
                 Expires = isPersistent ? expiration : DateTime.MinValue
             };
-            // 1. 关闭浏览器即删除（Session Cookie）：DateTime.MinValue
-            // 2. 指定时间后删除：大于 DateTime.Now 的某个值
-            // 3. 删除Cookie：小于 DateTime.Now 的某个值
+
             Response.Cookies.Add(cookie);
         }
 
@@ -308,7 +309,7 @@ namespace FineMIS.Pages
         public string GetProductVersion()
         {
             var v = Assembly.GetExecutingAssembly().GetName().Version;
-            return $"{v.Major}.{v.Minor}";
+            return $"{v.Major}.{v.Minor}.{v.Build}";
         }
 
         #endregion
@@ -637,21 +638,21 @@ namespace FineMIS.Pages
             grid.DataKeyNames = GetDataKeyNames<T>().ToArray();
         }
 
-        /// <summary>
-        /// 选中行是否被审核
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <returns></returns>
+        ///// <summary>
+        ///// 选中行是否被审核
+        ///// </summary>
+        ///// <param name="grid"></param>
+        ///// <returns></returns>
         //protected bool IsSelectedDataVerified(Grid grid)
         //{
         //    return grid.SelectedRowIndexArray.Any(rowIndex => Convert.ToInt32(Verified.Permit) == Convert.ToInt32(GetDataKey(grid, rowIndex, "Verified")));
         //}
 
-        /// <summary>
-        /// 行是否被审核
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="rowIndex"></param>
+        ///// <summary>
+        ///// 行是否被审核
+        ///// </summary>
+        ///// <param name="grid"></param>
+        ///// <param name="rowIndex"></param>
         /// <returns></returns>
         //protected bool IsSpecifiedDataVerified(Grid grid, int rowIndex)
         //{

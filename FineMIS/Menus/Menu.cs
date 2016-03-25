@@ -47,7 +47,7 @@ namespace FineMIS.Menus
                     {
                         Id = 101,
                         Name = "商砼站点",
-                        NavigateUrl = "~/Pages/Company/ConcretePlant",
+                        NavigateUrl = "http://localhost:64357/Index.aspx",
                         ImageUrl = "~/res/icon/tag_blue.png",
                         SortIndex = 101,
                         ParentId = 100,

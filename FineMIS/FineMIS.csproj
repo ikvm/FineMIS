@@ -158,6 +158,8 @@
     <Content Include="res\google-code-prettify\prettify.css" />
     <Content Include="res\google-code-prettify\prettify.js" />
     <Content Include="res\google-code-prettify\run_prettify.js" />
+    <Content Include="res\images\favicon.png" />
+    <Content Include="res\images\logo.png" />
     <Content Include="res\js\jquery.js" />
     <Content Include="res\js\jquery.min.js" />
     <Content Include="Web.config" />
@@ -192,6 +194,7 @@
     </Compile>
     <Compile Include="Menus\Menu.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\ExtraModels.cs" />
     <Compile Include="Models\Models.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
