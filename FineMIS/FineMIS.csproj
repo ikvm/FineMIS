@@ -219,6 +219,10 @@
       <Project>{0f8bf1f6-ddc2-43da-bb0b-416cc287ac1b}</Project>
       <Name>FineUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OutOfMemory\OutOfMemory\OutOfMemory.csproj">
+      <Project>{a05f9722-a25d-453a-a8da-60dfb369c1b7}</Project>
+      <Name>OutOfMemory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\PetaPoco\PetaPoco\PetaPoco.csproj">
       <Project>{33699753-151d-4100-8f12-9ae1aeb5c5bd}</Project>
       <Name>PetaPoco</Name>
