@@ -10,6 +10,8 @@ namespace FineMIS
 {
     public partial class Default : System.Web.UI.Page
     {
+        #region Page_Init
+
         protected void Page_Init(object sender, EventArgs e)
         {
             // 用户可见的菜单列表
@@ -49,11 +51,6 @@ namespace FineMIS
             Title = Settings.Title;
         }
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private JObject GetClientIds(params ControlBase[] ctrls)
         {
             var jo = new JObject();
@@ -64,6 +61,17 @@ namespace FineMIS
 
             return jo;
         }
+
+        #endregion
+
+        #region Page_Load
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
 
         #region InitAccordionMenu
 
@@ -213,7 +221,7 @@ namespace FineMIS
             // 当前用户所属角色可用的菜单列表
             var menus = new List<Menu>();
 
-            foreach (var menu in Menu.Fetch())
+            foreach (var menu in Menu.Menus)
             {
                 // 如果此菜单不属于任何模块
                 if (string.IsNullOrEmpty(menu.Roles))

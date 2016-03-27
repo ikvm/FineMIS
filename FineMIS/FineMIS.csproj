@@ -78,15 +78,15 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Index.aspx" />
-    <Content Include="Models\Models.tt">
+    <Content Include="PetaPoco\Models.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Models.cs</LastGenOutput>
     </Content>
     <Content Include="packages.config" />
     <Content Include="extjs_builder\build.bat" />
     <Content Include="extjs_builder\build_only_js_css.bat" />
-    <Content Include="Models\PetaPoco.Core.ttinclude" />
-    <Content Include="Models\PetaPoco.Generator.ttinclude" />
+    <Content Include="PetaPoco\PetaPoco.Core.ttinclude" />
+    <Content Include="PetaPoco\PetaPoco.Generator.ttinclude" />
     <Content Include="Pages\Page.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -192,14 +192,15 @@
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\ExtraModels.cs" />
-    <Compile Include="Models\Models.cs">
+    <Compile Include="Models\SYS\SYS_MENU.cs" />
+    <Compile Include="PetaPoco\BaseModel.cs" />
+    <Compile Include="PetaPoco\ExtraModels.cs" />
+    <Compile Include="PetaPoco\Models.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Repository.cs" />
+    <Compile Include="PetaPoco\Repository.cs" />
     <Compile Include="Pages\Page.Master.cs">
       <DependentUpon>Page.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
