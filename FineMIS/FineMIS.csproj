@@ -192,7 +192,6 @@
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Menus\Menu.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ExtraModels.cs" />
     <Compile Include="Models\Models.cs">

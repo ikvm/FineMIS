@@ -4,7 +4,7 @@ using System.Linq;
 using FineUI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Menu = FineMIS.Menus.Menu;
+using Menu = FineMIS.SYS_MENU;
 
 namespace FineMIS
 {
@@ -213,7 +213,7 @@ namespace FineMIS
             // 当前用户所属角色可用的菜单列表
             var menus = new List<Menu>();
 
-            foreach (var menu in Menu.Menus)
+            foreach (var menu in Menu.Fetch())
             {
                 // 如果此菜单不属于任何模块
                 if (string.IsNullOrEmpty(menu.Roles))
