@@ -1,36 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using PetaPoco;
+using FineMIS.Controls;
 
 namespace FineMIS
 {
     public partial class SYS_MENU
     {
-        [ThreadStatic]
-        private static List<SYS_MENU> _menus;
-
         public static List<SYS_MENU> Menus
         {
             get
             {
-                if (_menus == null)
-                {
-                    Init();
-                }
-                return _menus;
+                var menus = new List<SYS_MENU>();
+
+                menus.AddRange(Fetch(
+                    Sql.Builder
+                        .LeftJoin("SYS_ROLE_MENU_ACTION")
+                        .On("SYS_MENU.Id = SYS_ROLE_MENU_ACTION.MenuId")
+                        .Where("RoleId = @0", Current.RoleId)
+                        .Where("SYS_MENU.Active = @0", true)
+                        .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
+                    ));
+
+                return menus;
             }
-        }
-
-        public static void Reload()
-        {
-            _menus = null;
-        }
-
-        private static void Init()
-        {
-            _menus = SYS_MENU.Fetch(Sql.Builder.Where("Active = @0", true).OrderBy("SortIndex"));
         }
     }
 }

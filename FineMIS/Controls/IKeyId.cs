@@ -7,6 +7,6 @@ namespace FineMIS.Controls
 {
     public interface IKeyId
     {
-        int Id { get; set; }
+        long Id { get; set; }
     }
 }

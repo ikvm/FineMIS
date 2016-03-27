@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Security;
 using FineUI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Menu = FineMIS.SYS_MENU;
 
 namespace FineMIS
 {
@@ -15,12 +15,12 @@ namespace FineMIS
         protected void Page_Init(object sender, EventArgs e)
         {
             // 用户可见的菜单列表
-            var menus = ResolveUserMenuList();
+            var menus = SYS_MENU.Menus;
             if (menus.Count == 0)
             {
                 // todo
                 // 返回未授权页面
-                Response.Redirect("401.aspx");
+                //Response.Redirect("401.aspx");
                 Response.Write("系统管理员尚未给你配置菜单！");
                 Response.End();
 
@@ -80,7 +80,7 @@ namespace FineMIS
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        private Accordion InitAccordionMenu(List<Menu> menus)
+        private Accordion InitAccordionMenu(List<SYS_MENU> menus)
         {
             var accordionMenu = new Accordion
             {
@@ -132,7 +132,7 @@ namespace FineMIS
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        private Tree InitTreeMenu(List<Menu> menus)
+        private Tree InitTreeMenu(List<SYS_MENU> menus)
         {
             var treeMenu = new Tree
             {
@@ -161,7 +161,7 @@ namespace FineMIS
         /// <param name="menus"></param>
         /// <param name="parentMenu"></param>
         /// <param name="nodes"></param>
-        private int ResolveMenuTree(List<Menu> menus, Menu parentMenu, TreeNodeCollection nodes)
+        private int ResolveMenuTree(List<SYS_MENU> menus, SYS_MENU parentMenu, TreeNodeCollection nodes)
         {
             var count = 0;
             foreach (var menu in menus.Where(m => m.ParentId == (parentMenu?.Id ?? 0)))
@@ -210,32 +210,13 @@ namespace FineMIS
 
         #endregion
 
-        #region ResolveUserMenuList
+        #region SignOut
 
-        // 获取用户可用的菜单列表
-        private List<Menu> ResolveUserMenuList()
+        protected void btnExit_Click(object sender, EventArgs e)
         {
-            // 当前登陆用户的权限列表
-            var roles = Current.Roles.Split(',').ToList();
+            Security.SignOut();
 
-            // 当前用户所属角色可用的菜单列表
-            var menus = new List<Menu>();
-
-            foreach (var menu in Menu.Menus)
-            {
-                // 如果此菜单不属于任何模块
-                if (string.IsNullOrEmpty(menu.Roles))
-                {
-                    menus.Add(menu);
-                }
-                // 或者此用户所属角色拥有对此模块的权限
-                else if (menu.Roles.Split(',').Any(role => roles.Contains(role)))
-                {
-                    menus.Add(menu);
-                }
-            }
-
-            return menus;
+            Response.Redirect(FormsAuthentication.LoginUrl);
         }
 
         #endregion

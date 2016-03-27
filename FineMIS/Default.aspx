@@ -81,7 +81,7 @@
                                 <f:Label runat="server" Width="4px" Text=""></f:Label>
                                 <f:Button ID="btnRefresh" runat="server" Icon="Reload" Text="刷新" ToolTip="刷新主区域内容" EnablePostBack="false"></f:Button>
                                 <f:Button ID="btnHelp" EnablePostBack="false" Icon="Help" Text="帮助" runat="server"></f:Button>
-                                <f:Button ID="btnExit" runat="server" Icon="UserRed" Text="退出" ConfirmText="确定退出系统?"></f:Button>
+                                <f:Button ID="btnExit" runat="server" Icon="UserRed" Text="退出" ConfirmText="确定退出系统?" OnClick="btnExit_Click"></f:Button>
                             </Items>
                         </f:Toolbar>
                     </Toolbars>
