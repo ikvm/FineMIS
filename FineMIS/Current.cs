@@ -26,13 +26,10 @@ namespace FineMIS
         /// Shortcut to HttpContext.Current.User.Identity.RoleIds
         /// </summary>
         public static List<long> RoleIds
-        {
-            get
-            {
-                var identity = Context.User.Identity as CustomIdentity;
-                return identity != null ? identity.RoleIds : new List<long>();
-            }
-        }
+            =>
+                (Context.User.Identity as CustomIdentity) != null
+                    ? ((CustomIdentity)Context.User.Identity).RoleIds
+                    : new List<long>();
 
         /// <summary>
         /// Shortcut to HttpContext.Current.User.Identity.UserId

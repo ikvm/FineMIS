@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PetaPoco;
 using FineMIS.Controls;
-using FineMIS.Models.Comparer;
 
 namespace FineMIS
 {
