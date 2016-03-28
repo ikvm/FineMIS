@@ -17,40 +17,31 @@ namespace FineMIS
         /// </summary>
         public static HttpRequest Request => Context.Request;
 
-        public static string UserName
+        /// <summary>
+        /// Shortcut to HttpContext.Current.User.Identity.Name.
+        /// </summary>
+        public static string UserName => Context.User.Identity.Name;
+
+        /// <summary>
+        /// Shortcut to HttpContext.Current.User.Identity.RoleIds
+        /// </summary>
+        public static List<long> RoleIds
         {
             get
             {
                 var identity = Context.User.Identity as CustomIdentity;
-                return identity != null ? identity.Name : string.Empty;
+                return identity != null ? identity.RoleIds : new List<long>();
             }
         }
 
-        public static long RoleId
-        {
-            get
-            {
-                var identity = Context.User.Identity as CustomIdentity;
-                return identity?.RoleId ?? 0;
-            }
-        }
+        /// <summary>
+        /// Shortcut to HttpContext.Current.User.Identity.UserId
+        /// </summary>
+        public static long UserBelongTo => (Context.User.Identity as CustomIdentity)?.UserId ?? 0;
 
-        public static long UserBelongTo
-        {
-            get
-            {
-                var identity = Context.User.Identity as CustomIdentity;
-                return identity?.UserId ?? 0;
-            }
-        }
-
-        public static long CmpyBelongTo
-        {
-            get
-            {
-                var identity = Context.User.Identity as CustomIdentity;
-                return identity?.CmpyId ?? 0;
-            }
-        }
+        /// <summary>
+        /// Shortcut to HttpContext.Current.User.Identity.CmpyId
+        /// </summary>
+        public static long CmpyBelongTo => (Context.User.Identity as CustomIdentity)?.CmpyId ?? 0;
     }
 }

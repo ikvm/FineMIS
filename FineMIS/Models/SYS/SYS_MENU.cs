@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PetaPoco;
 using FineMIS.Controls;
+using FineMIS.Models.Comparer;
 
 namespace FineMIS
 {
@@ -14,16 +15,19 @@ namespace FineMIS
             {
                 var menus = new List<SYS_MENU>();
 
-                menus.AddRange(Fetch(
-                    Sql.Builder
-                        .LeftJoin("SYS_ROLE_MENU_ACTION")
-                        .On("SYS_MENU.Id = SYS_ROLE_MENU_ACTION.MenuId")
-                        .Where("RoleId = @0", Current.RoleId)
-                        .Where("SYS_MENU.Active = @0", true)
-                        .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
-                    ));
+                foreach (var id in Current.RoleIds)
+                {
+                    menus.AddRange(Fetch(
+                        Sql.Builder
+                            .LeftJoin("SYS_ROLE_MENU_ACTION")
+                            .On("SYS_MENU.Id = SYS_ROLE_MENU_ACTION.MenuId")
+                            .Where("RoleId = @0", id)
+                            .Where("SYS_MENU.Active = @0", true)
+                            .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
+                        ));
+                }
 
-                return menus;
+                return menus.Distinct(new SYS_MENU_Comparer()).ToList();
             }
         }
     }

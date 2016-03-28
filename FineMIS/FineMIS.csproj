@@ -74,7 +74,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="401.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Index.aspx" />
@@ -166,13 +165,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="401.aspx.cs">
-      <DependentUpon>401.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="401.aspx.designer.cs">
-      <DependentUpon>401.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Controls\IKeyId.cs" />
     <Compile Include="Controls\ITree.cs" />
     <Compile Include="Current.cs" />
@@ -200,6 +192,7 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Comparer\SYS_MENU_Comparer.cs" />
     <Compile Include="Models\SYS\SYS_MENU.cs" />
     <Compile Include="PetaPoco\BaseModel.cs" />
     <Compile Include="PetaPoco\ExtraModels.cs" />

@@ -19,10 +19,9 @@ namespace FineMIS
             if (menus.Count == 0)
             {
                 // todo
+                // 401
                 // 返回未授权页面
-                //Response.Redirect("401.aspx");
-                Response.Write("系统管理员尚未给你配置菜单！");
-                Response.End();
+                Response.Redirect(FormsAuthentication.LoginUrl);
 
                 return;
             }

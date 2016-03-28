@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Security;
 using OutOfMemory;
 using PetaPoco;
-using User = FineMIS.SYS_USER;
 
 namespace FineMIS
 {
@@ -24,12 +23,12 @@ namespace FineMIS
         public static void AuthenticateRequest()
         {
             // default to an empty/unauthenticated user to assign to context.User.
-            var identity = new CustomIdentity(string.Empty, 0, 0, 0, false);
+            var identity = new CustomIdentity(string.Empty, 0, 0, false);
             var principal = new CustomPrincipal(identity);
 
             var context = HttpContext.Current;
 
-            var authCookie = context.Request.Cookies[FormsAuthCookieName];
+            var authCookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie != null)
             {
                 FormsAuthenticationTicket authTicket;
@@ -39,7 +38,7 @@ namespace FineMIS
                 }
                 catch (Exception)
                 {
-                    context.Request.Cookies.Remove(FormsAuthCookieName);
+                    context.Request.Cookies.Remove(FormsAuthentication.FormsCookieName);
                     authTicket = null;
 
                     // log here
@@ -48,9 +47,9 @@ namespace FineMIS
                 if (!string.IsNullOrWhiteSpace(authTicket?.UserData))
                 {
                     var datas = authTicket.UserData.Split('|');
-                    if (datas.Length == 4)
+                    if (datas.Length == 3)
                     {
-                        identity = new CustomIdentity(datas[0], datas[1].ToInt64(), datas[2].ToInt64(), datas[3].ToInt64(), true);
+                        identity = new CustomIdentity(datas[0], datas[1].ToInt64(), datas[2].ToInt64(), true);
                         principal = new CustomPrincipal(identity);
                     }
                 }
@@ -59,17 +58,12 @@ namespace FineMIS
         }
 
         /// <summary>
-        /// Name of the Forms authentication cookie for the current blog instance.
-        /// </summary>
-        public static string FormsAuthCookieName => FormsAuthentication.FormsCookieName;
-
-        /// <summary>
         /// Signs out user out of the current blog instance.
         /// </summary>
         public static void SignOut()
         {
             // using a custom cookie name based on the current blog instance.
-            var cookie = HttpContext.Current.Request.Cookies[FormsAuthCookieName];
+            var cookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
             if (cookie != null)
             {
                 cookie.Expires = DateTime.Now.AddYears(-3);
@@ -91,8 +85,10 @@ namespace FineMIS
 
             if (!string.IsNullOrWhiteSpace(un) && !string.IsNullOrWhiteSpace(pw))
             {
-                var user = User.SingleOrDefault(Sql.Builder.Where("UserName = @0", un).Where("Active = @0", true));
+                var user = SYS_USER.SingleOrDefault(Sql.Builder.Where("UserName = @0", un).Where("Active = @0", true));
 
+                // todo
+                // hash password
                 if (user != null && user.Password == pw)
                 {
                     var context = HttpContext.Current;
@@ -104,7 +100,7 @@ namespace FineMIS
                         DateTime.Now,
                         expirationDate,
                         rememberMe,
-                        $"{user.Name}|{user.RoleId}|{user.Id}|{user.CmpyBelongTo}",
+                        $"{user.Name}|{user.Id}|{user.CmpyBelongTo}",
                         FormsAuthentication.FormsCookiePath
                         );
 
@@ -113,7 +109,7 @@ namespace FineMIS
                     // setting a custom cookie name based on the current blog instance.
                     // if !rememberMe, set expires to DateTime.MinValue which makes the
                     // cookie a browser-session cookie expiring when the browser is closed.
-                    var cookie = new HttpCookie(FormsAuthCookieName, encryptedTicket)
+                    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)
                     {
                         Expires = rememberMe ? expirationDate : DateTime.MinValue,
                         HttpOnly = true

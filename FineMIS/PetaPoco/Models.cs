@@ -190,6 +190,31 @@ namespace FineMIS
 	
 		[Column] public string Email { get; set; }
 	
+		[Column] public override string CreateBy { get; set; }
+	
+		[Column] public override DateTime CreateDate { get; set; }
+	
+		[Column] public override string LastUpdateBy { get; set; }
+	
+		[Column] public override DateTime LastUpdateDate { get; set; }
+	
+		[Column] public override bool Active { get; set; }
+	
+		[Column] public override long UserBelongTo { get; set; }
+	
+		[Column] public override long CmpyBelongTo { get; set; }
+	
+	}
+    
+	[TableName("dbo.SYS_USER_ROLE")]
+	[PrimaryKey("Id")]
+	[ExplicitColumns]
+    public partial class SYS_USER_ROLE : BaseModel<SYS_USER_ROLE, long>
+    {
+		[Column] public override long Id { get; set; }
+	
+		[Column] public long? UserId { get; set; }
+	
 		[Column] public long? RoleId { get; set; }
 	
 		[Column] public override string CreateBy { get; set; }
