@@ -20,8 +20,11 @@ namespace FineMIS
             {
                 // todo
                 // 401
+                // 清除cookie
                 // 返回未授权页面
-                Response.Redirect(FormsAuthentication.LoginUrl);
+                Security.SignOut();
+
+                Response.Redirect("~/401.html");
 
                 return;
             }
