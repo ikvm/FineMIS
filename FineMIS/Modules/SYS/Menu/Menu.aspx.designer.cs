@@ -7,81 +7,99 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace FineMIS.Pages {
+namespace FineMIS.Modules.SYS.Menu {
     
     
-    public partial class Page {
+    public partial class Menu {
         
         /// <summary>
-        /// form1 控件。
+        /// Grid1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::FineUI.Grid Grid1;
         
         /// <summary>
-        /// PageManager1 控件。
+        /// Toolbar 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::FineUI.PageManager PageManager1;
+        protected global::FineUI.Toolbar Toolbar;
         
         /// <summary>
-        /// Head 控件。
+        /// btnPostBack 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder Head;
+        protected global::FineUI.Button btnPostBack;
         
         /// <summary>
-        /// Panel1 控件。
+        /// btnRefresh 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::FineUI.Panel Panel1;
+        protected global::FineUI.Button btnRefresh;
         
         /// <summary>
-        /// CPHConnector1 控件。
+        /// btnInsert 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::FineUI.CPHConnector CPHConnector1;
+        protected global::FineUI.Button btnInsert;
         
         /// <summary>
-        /// Main 控件。
+        /// btnDelete 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder Main;
+        protected global::FineUI.Button btnDelete;
         
         /// <summary>
-        /// Foot 控件。
+        /// ttbFullTextSearch 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder Foot;
+        protected global::FineUI.TwinTriggerBox ttbFullTextSearch;
         
         /// <summary>
-        /// Window1 控件。
+        /// ToolbarSeparator1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::FineUI.Window Window1;
+        protected global::FineUI.ToolbarSeparator ToolbarSeparator1;
+        
+        /// <summary>
+        /// ToolbarText1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::FineUI.ToolbarText ToolbarText1;
+        
+        /// <summary>
+        /// ddlGridPageSize 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::FineUI.DropDownList ddlGridPageSize;
     }
 }

@@ -15,16 +15,6 @@ namespace FineMIS.Pages
 {
     public class PageBase : System.Web.UI.Page
     {
-        #region 只读静态变量
-
-        private static readonly string CHECK_POWER_FAIL_PAGE_MESSAGE = "您无权访问此页面！";
-        private static readonly string CHECK_POWER_FAIL_ACTION_MESSAGE = "您无权进行此操作！";
-
-        public static readonly string FORCE_REFRESH = "FORCE_REFRESH";
-        public static readonly string DEFAULT_ORDER_BY = "Id DESC";
-
-        #endregion
-
         #region 页面初始化
 
         protected override void OnInit(EventArgs e)
@@ -50,10 +40,30 @@ namespace FineMIS.Pages
 
         #endregion
 
+        #region 产品版本
+
+        public string GetProductVersion()
+        {
+            var v = Assembly.GetExecutingAssembly().GetName().Version;
+            return $"{v.Major}.{v.Minor}.{v.Build}";
+        }
+
+        #endregion
+
+        #region 只读静态变量
+
+        private static readonly string CHECK_POWER_FAIL_PAGE_MESSAGE = "您无权访问此页面！";
+        private static readonly string CHECK_POWER_FAIL_ACTION_MESSAGE = "您无权进行此操作！";
+
+        public static readonly string FORCE_REFRESH = "FORCE_REFRESH";
+        public static readonly string DEFAULT_ORDER_BY = "Id DESC";
+
+        #endregion
+
         #region 请求参数
 
         /// <summary>
-        /// 获取查询字符串中的参数值
+        ///     获取查询字符串中的参数值
         /// </summary>
         protected string GetQueryValue(string queryKey)
         {
@@ -61,11 +71,11 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 获取查询字符串中的参数值
+        ///     获取查询字符串中的参数值
         /// </summary>
         protected int GetQueryIntValue(string queryKey)
         {
-            int queryIntValue = -1;
+            var queryIntValue = -1;
             try
             {
                 queryIntValue = Convert.ToInt32(Request.QueryString[queryKey]);
@@ -85,24 +95,26 @@ namespace FineMIS.Pages
         // http://blog.163.com/zjlovety@126/blog/static/224186242010070024282/
         // http://www.cnblogs.com/gaoshuai/articles/1863231.html
         /// <summary>
-        /// 当前登录用户的角色列表
+        ///     当前登录用户的角色列表
         /// </summary>
         /// <returns></returns>
         protected List<int> GetIdentityRoleIDs()
         {
-            List<int> roleIDs = new List<int>();
+            var roleIDs = new List<int>();
 
             if (!User.Identity.IsAuthenticated) return roleIDs;
             var ticket = ((FormsIdentity)User.Identity).Ticket;
             var userData = ticket.UserData;
 
-            roleIDs.AddRange(from roleId in userData.Split(',') where !string.IsNullOrEmpty(roleId) select Convert.ToInt32(roleId));
+            roleIDs.AddRange(from roleId in userData.Split(',')
+                             where !string.IsNullOrEmpty(roleId)
+                             select Convert.ToInt32(roleId));
 
             return roleIDs;
         }
 
         /// <summary>
-        /// 当前登录用户名
+        ///     当前登录用户名
         /// </summary>
         /// <returns></returns>
         protected string GetIdentityName()
@@ -111,26 +123,27 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 创建表单验证的票证并存储在客户端Cookie中
+        ///     创建表单验证的票证并存储在客户端Cookie中
         /// </summary>
         /// <param name="userName">当前登录用户名</param>
         /// <param name="roleIDs">当前登录用户的角色ID列表</param>
         /// <param name="isPersistent">是否跨浏览器会话保存票证</param>
         /// <param name="expiration">过期时间</param>
-        protected void CreateFormsAuthenticationTicket(string userName, string roleIDs, bool isPersistent, DateTime expiration)
+        protected void CreateFormsAuthenticationTicket(string userName, string roleIDs, bool isPersistent,
+            DateTime expiration)
         {
             // 创建Forms身份验证票据
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
-                userName,                       // 与票证关联的用户名
-                DateTime.Now,                   // 票证发出时间
-                expiration,                     // 票证过期时间
-                isPersistent,                   // 如果票证将存储在持久性 Cookie 中（跨浏览器会话保存），则为 true；否则为 false。
-                roleIDs                         // 存储在票证中的用户特定的数据
-             );
+            var ticket = new FormsAuthenticationTicket(1,
+                userName, // 与票证关联的用户名
+                DateTime.Now, // 票证发出时间
+                expiration, // 票证过期时间
+                isPersistent, // 如果票证将存储在持久性 Cookie 中（跨浏览器会话保存），则为 true；否则为 false。
+                roleIDs // 存储在票证中的用户特定的数据
+                );
 
             // 对Forms身份验证票据进行加密，然后保存到客户端Cookie中
-            string hashTicket = FormsAuthentication.Encrypt(ticket);
-            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hashTicket)
+            var hashTicket = FormsAuthentication.Encrypt(ticket);
+            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hashTicket)
             {
                 HttpOnly = true,
 
@@ -148,8 +161,8 @@ namespace FineMIS.Pages
         #region 权限检查
 
         /// <summary>
-        /// 检查当前用户是否拥有当前页面的浏览权限
-        /// 页面需要先定义ViewPower属性，以确定页面与某个浏览权限的对应关系
+        ///     检查当前用户是否拥有当前页面的浏览权限
+        ///     页面需要先定义ViewPower属性，以确定页面与某个浏览权限的对应关系
         /// </summary>
         /// <returns></returns>
         protected bool CheckPowerView()
@@ -158,7 +171,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 检查当前用户是否拥有某个权限
+        ///     检查当前用户是否拥有某个权限
         /// </summary>
         /// <returns></returns>
         protected bool CheckPower(string powerName)
@@ -170,7 +183,7 @@ namespace FineMIS.Pages
             }
 
             // 当前登陆用户的权限列表
-            List<string> rolePowerNames = GetRolePowerNames();
+            var rolePowerNames = GetRolePowerNames();
             if (rolePowerNames.Contains(powerName))
             {
                 return true;
@@ -180,7 +193,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 获取当前登录用户拥有的全部权限列表
+        ///     获取当前登录用户拥有的全部权限列表
         /// </summary>
         /// <returns></returns>
         protected List<string> GetRolePowerNames()
@@ -280,7 +293,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 为删除Grid中选中项的按钮添加提示信息
+        ///     为删除Grid中选中项的按钮添加提示信息
         /// </summary>
         /// <param name="btn"></param>
         /// <param name="grid"></param>
@@ -294,22 +307,14 @@ namespace FineMIS.Pages
             ResolveDeleteButtonForGrid(btn, grid, "请至少应该选择一项记录！", confirmTemplate);
         }
 
-        protected void ResolveDeleteButtonForGrid(Button btn, Grid grid, string noSelectionMessage, string confirmTemplate)
+        protected void ResolveDeleteButtonForGrid(Button btn, Grid grid, string noSelectionMessage,
+            string confirmTemplate)
         {
             // 点击删除按钮时，至少选中一项
             btn.OnClientClick = grid.GetNoSelectionAlertInParentReference(noSelectionMessage);
-            btn.ConfirmText = String.Format(confirmTemplate, "&nbsp;<span class=\"highlight\"><script>" + grid.GetSelectedCountReference() + "</script></span>&nbsp;");
+            btn.ConfirmText = string.Format(confirmTemplate,
+                "&nbsp;<span class=\"highlight\"><script>" + grid.GetSelectedCountReference() + "</script></span>&nbsp;");
             btn.ConfirmTarget = Target.Top;
-        }
-
-        #endregion
-
-        #region 产品版本
-
-        public string GetProductVersion()
-        {
-            var v = Assembly.GetExecutingAssembly().GetName().Version;
-            return $"{v.Major}.{v.Minor}.{v.Build}";
         }
 
         #endregion
@@ -317,27 +322,27 @@ namespace FineMIS.Pages
         #region 隐藏字段相关
 
         /// <summary>
-        /// 从隐藏字段中获取选择的全部ID列表
+        ///     从隐藏字段中获取选择的全部ID列表
         /// </summary>
         /// <param name="hfSelectedIds"></param>
         /// <returns></returns>
         public List<int> GetSelectedIDsFromHiddenField(HiddenField hfSelectedIds)
         {
-            string currentIds = hfSelectedIds.Text.Trim();
+            var currentIds = hfSelectedIds.Text.Trim();
             var idsArray = !string.IsNullOrEmpty(currentIds) ? JArray.Parse(currentIds) : new JArray();
             return new List<int>(idsArray.ToObject<int[]>());
         }
 
         /// <summary>
-        /// 跨页保持选中项 - 将表格当前页面选中行对应的数据同步到隐藏字段中
+        ///     跨页保持选中项 - 将表格当前页面选中行对应的数据同步到隐藏字段中
         /// </summary>
         /// <param name="hfSelectedIds"></param>
         /// <param name="grid"></param>
         public void SyncSelectedRowIndexArrayToHiddenField(HiddenField hfSelectedIds, Grid grid)
         {
-            List<int> ids = GetSelectedIDsFromHiddenField(hfSelectedIds);
+            var ids = GetSelectedIDsFromHiddenField(hfSelectedIds);
 
-            List<int> selectedRows = new List<int>();
+            var selectedRows = new List<int>();
             if (grid.SelectedRowIndexArray != null && grid.SelectedRowIndexArray.Length > 0)
             {
                 selectedRows = new List<int>(grid.SelectedRowIndexArray);
@@ -345,9 +350,11 @@ namespace FineMIS.Pages
 
             if (grid.IsDatabasePaging)
             {
-                for (int i = 0, count = Math.Min(grid.PageSize, (grid.RecordCount - grid.PageIndex * grid.PageSize)); i < count; i++)
+                for (int i = 0, count = Math.Min(grid.PageSize, grid.RecordCount - grid.PageIndex * grid.PageSize);
+                    i < count;
+                    i++)
                 {
-                    int id = Convert.ToInt32(grid.DataKeys[i][0]);
+                    var id = Convert.ToInt32(grid.DataKeys[i][0]);
                     if (selectedRows.Contains(i))
                     {
                         if (!ids.Contains(id))
@@ -366,10 +373,12 @@ namespace FineMIS.Pages
             }
             else
             {
-                int startPageIndex = grid.PageIndex * grid.PageSize;
-                for (int i = startPageIndex, count = Math.Min(startPageIndex + grid.PageSize, grid.RecordCount); i < count; i++)
+                var startPageIndex = grid.PageIndex * grid.PageSize;
+                for (int i = startPageIndex, count = Math.Min(startPageIndex + grid.PageSize, grid.RecordCount);
+                    i < count;
+                    i++)
                 {
-                    int id = Convert.ToInt32(grid.DataKeys[i][0]);
+                    var id = Convert.ToInt32(grid.DataKeys[i][0]);
                     if (selectedRows.Contains(i - startPageIndex))
                     {
                         if (!ids.Contains(id))
@@ -391,20 +400,22 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 跨页保持选中项 - 根据隐藏字段的数据更新表格当前页面的选中行
+        ///     跨页保持选中项 - 根据隐藏字段的数据更新表格当前页面的选中行
         /// </summary>
         /// <param name="hfSelectedIds"></param>
         /// <param name="grid"></param>
         public void UpdateSelectedRowIndexArray(HiddenField hfSelectedIds, Grid grid)
         {
-            List<int> ids = GetSelectedIDsFromHiddenField(hfSelectedIds);
+            var ids = GetSelectedIDsFromHiddenField(hfSelectedIds);
 
-            List<int> nextSelectedRowIndexArray = new List<int>();
+            var nextSelectedRowIndexArray = new List<int>();
             if (grid.IsDatabasePaging)
             {
-                for (int i = 0, count = Math.Min(grid.PageSize, (grid.RecordCount - grid.PageIndex * grid.PageSize)); i < count; i++)
+                for (int i = 0, count = Math.Min(grid.PageSize, grid.RecordCount - grid.PageIndex * grid.PageSize);
+                    i < count;
+                    i++)
                 {
-                    int id = Convert.ToInt32(grid.DataKeys[i][0]);
+                    var id = Convert.ToInt32(grid.DataKeys[i][0]);
                     if (ids.Contains(id))
                     {
                         nextSelectedRowIndexArray.Add(i);
@@ -413,10 +424,12 @@ namespace FineMIS.Pages
             }
             else
             {
-                int nextStartPageIndex = grid.PageIndex * grid.PageSize;
-                for (int i = nextStartPageIndex, count = Math.Min(nextStartPageIndex + grid.PageSize, grid.RecordCount); i < count; i++)
+                var nextStartPageIndex = grid.PageIndex * grid.PageSize;
+                for (int i = nextStartPageIndex, count = Math.Min(nextStartPageIndex + grid.PageSize, grid.RecordCount);
+                    i < count;
+                    i++)
                 {
-                    int id = Convert.ToInt32(grid.DataKeys[i][0]);
+                    var id = Convert.ToInt32(grid.DataKeys[i][0]);
                     if (ids.Contains(id))
                     {
                         nextSelectedRowIndexArray.Add(i - nextStartPageIndex);
@@ -441,9 +454,10 @@ namespace FineMIS.Pages
         }
 
         // 将一个树型结构放在一个下列列表中可供选择
-        protected List<T> ResolveDdl<T>(List<T> source, int currentId, bool addRootNode) where T : class, ITree, ICloneable, IKeyId, new()
+        protected List<T> ResolveDdl<T>(List<T> source, int currentId, bool addRootNode)
+            where T : class, ITree, ICloneable, IKeyId, new()
         {
-            List<T> result = new List<T>();
+            var result = new List<T>();
 
             if (addRootNode)
             {
@@ -458,9 +472,9 @@ namespace FineMIS.Pages
                 result.Add(root);
             }
 
-            foreach (T item in source)
+            foreach (var item in source)
             {
-                T newT = (T)item.Clone();
+                var newT = (T)item.Clone();
                 result.Add(newT);
 
                 // 所有节点的TreeLevel加一
@@ -475,9 +489,9 @@ namespace FineMIS.Pages
             {
                 // 本节点不可点击（也就是说当前节点不可能是当前节点的父节点）
                 // 并且本节点的所有子节点也不可点击，你想如果当前节点跑到子节点的子节点，那么这些子节点就从树上消失了
-                bool startChileNode = false;
-                int startTreeLevel = 0;
-                foreach (T my in result)
+                var startChileNode = false;
+                var startTreeLevel = 0;
+                foreach (var my in result)
                 {
                     if (my.Id == currentId)
                     {
@@ -514,7 +528,7 @@ namespace FineMIS.Pages
         #region 表格相关
 
         /// <summary>
-        /// 根据列序号获得指定行的DataKey
+        ///     根据列序号获得指定行的DataKey
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="rowIndex"></param>
@@ -533,7 +547,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 根据名称获得指定行的DataKey
+        ///     根据名称获得指定行的DataKey
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="rowIndex"></param>
@@ -557,7 +571,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 获取当前选中行（一行）的Id
+        ///     获取当前选中行（一行）的Id
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
@@ -567,7 +581,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 获取当前选中行（一行）的指定datakey
+        ///     获取当前选中行（一行）的指定datakey
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="dataIndex"></param>
@@ -578,7 +592,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 获取当前选中行（一行）的指定datakey
+        ///     获取当前选中行（一行）的指定datakey
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="name"></param>
@@ -589,7 +603,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 获取当前选中行的Id列表
+        ///     获取当前选中行的Id列表
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
@@ -599,7 +613,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 获取当前选中行的指定datakey列表
+        ///     获取当前选中行的指定datakey列表
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="dataIndex"></param>
@@ -610,7 +624,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 获取当前选中行的指定datakey列表
+        ///     获取当前选中行的指定datakey列表
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="name"></param>
@@ -621,16 +635,18 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 根据类型获得指定格式的DataKeyNames
+        ///     根据类型获得指定格式的DataKeyNames
         /// </summary>
         /// <returns></returns>
         protected IEnumerable<string> GetDataKeyNames<T>()
         {
-            return (from p in typeof(T).GetProperties() where p.GetCustomAttributes(typeof(ColumnAttribute)).Any() select p.Name);
+            return from p in typeof(T).GetProperties()
+                   where p.GetCustomAttributes(typeof(ColumnAttribute)).Any()
+                   select p.Name;
         }
 
         /// <summary>
-        /// 根据类型设置指定Grid的DataKeyNames
+        ///     根据类型设置指定Grid的DataKeyNames
         /// </summary>
         /// <param name="grid"></param>
         protected void SetDataKeyNames<T>(Grid grid)
@@ -654,148 +670,8 @@ namespace FineMIS.Pages
         ///// <param name="grid"></param>
         ///// <param name="rowIndex"></param>
         /// <returns></returns>
-        //protected bool IsSpecifiedDataVerified(Grid grid, int rowIndex)
-        //{
-        //    return Convert.ToInt32(Verified.Permit) == Convert.ToInt32(GetDataKey(grid, rowIndex, "Verified"));
-        //}
-
-        #endregion
-
-        #region 表单相关
-
-        ///// <summary>
-        ///// 由实体填充表单
-        ///// </summary>
-        ///// <param name="form"></param>
-        ///// <param name="key"></param>
-        //public void FillForm<T, TKey>(Form form, TKey key) where T : BaseModel<T, TKey>, new()
-        //{
-        //    var poco = BaseModel<T, TKey>.SingleOrDefault(key);
-
-        //    if (poco == null || poco.Id.ToInt64() <= 0) return;
-
-        //    foreach (var p in poco.GetType().GetProperties())
-        //    {
-        //        // 根据属性名和ID获取控件
-        //        var c = FindControlDeep(form, p.Name);
-        //        if (!(c is Field)) continue;
-
-        //        try
-        //        {
-        //            var value = p.GetValue(poco);
-        //            // 可空项没有赋值
-        //            // if (value == null || string.IsNullOrEmpty(value.ToString())) continue;
-
-        //            if (c is TextBox)
-        //            {
-        //                (c as TextBox).Text = value.ToString();
-        //            }
-        //            else if (c is TextArea)
-        //            {
-        //                (c as TextArea).Text = value.ToString();
-        //            }
-        //            else if (c is NumberBox)
-        //            {
-        //                (c as NumberBox).Text = value.ToString();
-        //            }
-        //            else if (c is DatePicker)
-        //            {
-        //                (c as DatePicker).SelectedDate = value.ToDateTime();
-        //            }
-        //            else if (c is DropDownList)
-        //            {
-        //                (c as DropDownList).SelectedValue = value.ToString();
-        //            }
-        //            else if (c is CheckBox)
-        //            {
-        //                (c as CheckBox).Checked = value.ToInt32() != 0;
-        //            }
-        //            //else if (c is TriggerBoxX)
-        //            //{
-        //            //    // Text
-        //            //    (c as TriggerBoxX).Text = value.ToString();
-        //            //    // Value
-        //            //    ViewState[(c as TriggerBoxX).FKName] = poco.GetType().GetProperty((c as TriggerBoxX).FKName).GetValue(poco);
-        //            //}
-        //            else
-        //            {
-        //                c.GetType().GetProperty("Text").SetValue(c, p.GetValue(poco).ToString());
-        //            }
-        //        }
-        //        catch (Exception)
-        //        {
-        //            // ignored
-        //        }
-        //    }
-        //}
-
-        ///// <summary>
-        ///// 由表单更新实体
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <typeparam name="TKey"></typeparam>
-        ///// <param name="form"></param>
-        ///// <param name="poco"></param>
-        //public void FillPoco<T, TKey>(Form form, ref T poco) where T : BaseModel<T, TKey>, new()
-        //{
-        //    foreach (var c in FindControlsDeep(form))
-        //    {
-        //        try
-        //        {
-        //            if (c is TextBox)
-        //            {
-        //                typeof(T).GetProperty(c.ID).SetValue(poco, string.IsNullOrEmpty((c as TextBox).Text) ? null : (c as TextBox).Text);
-        //            }
-        //            else if (c is TextArea)
-        //            {
-        //                typeof(T).GetProperty(c.ID).SetValue(poco, string.IsNullOrEmpty((c as TextArea).Text) ? null : (c as TextArea).Text);
-        //            }
-        //            else if (c is NumberBox)
-        //            {
-        //                if (string.IsNullOrEmpty((c as NumberBox).Text))
-        //                {
-        //                    typeof(T).GetProperty(c.ID).SetValue(poco, null);
-        //                }
-        //                else
-        //                {
-        //                    typeof(T).GetProperty(c.ID).SetValue(poco, (c as NumberBox).Text.ToDouble());
-        //                }
-        //            }
-        //            else if (c is DatePicker)
-        //            {
-        //                typeof(T).GetProperty(c.ID)
-        //                    .SetValue(poco,
-        //                        string.IsNullOrEmpty((c as DatePicker).Text) ? null : (c as DatePicker).SelectedDate);
-        //            }
-        //            else if (c is CheckBox)
-        //            {
-        //                typeof(T).GetProperty(c.ID).SetValue(poco, (c as CheckBox).Checked.ToInt32());
-        //            }
-        //            else if (c is DropDownList)
-        //            {
-        //                typeof(T).GetProperty(c.ID).SetValue(poco, (c as DropDownList).SelectedValue.ToInt64());
-        //            }
-        //            //else if (c is DropDownListX)
-        //            //{
-        //            //    if ((c as DropDownListX).SelectedValue == "NULL") continue;
-        //            //    typeof(T).GetProperty(c.ID).SetValue(poco, (c as DropDownListX).ActualText);
-        //            //}
-        //            //else if (c is TriggerBoxX)
-        //            //{
-        //            //    if (string.IsNullOrEmpty((c as TriggerBoxX).Text))
-        //            //        continue;
-        //            //    typeof(T).GetProperty((c as TriggerBoxX).FKName).SetValue(poco, ViewState[(c as TriggerBoxX).FKName].ToInt64());
-        //            //}
-        //        }
-        //        catch (Exception)
-        //        {
-        //            // ignored
-        //        }
-        //    }
-        //}
-
         /// <summary>
-        /// 清空所有表单字段内容
+        ///     清空所有表单字段内容
         /// </summary>
         /// <param name="form"></param>
         /// <param name="ignoreFields"></param>
@@ -825,7 +701,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 将表单所有字段置为只读
+        ///     将表单所有字段置为只读
         /// </summary>
         /// <param name="form"></param>
         public void SetReadOnlyControls(Form form)
@@ -864,13 +740,13 @@ namespace FineMIS.Pages
         #region 控件相关
 
         /// <summary>
-        /// 查找所有子控件(所有层级)
+        ///     查找所有子控件(所有层级)
         /// </summary>
         /// <param name="control"></param>
         /// <returns></returns>
         public List<Control> FindControlsDeep(Control control)
         {
-            List<Control> controls = new List<Control>();
+            var controls = new List<Control>();
 
             foreach (Control c in control.Controls)
             {
@@ -882,7 +758,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        /// 查找唯一子控件(所有层级)
+        ///     查找唯一子控件(所有层级)
         /// </summary>
         /// <param name="control"></param>
         /// <param name="id"></param>
@@ -897,6 +773,75 @@ namespace FineMIS.Pages
             {
                 // 没找到或ID不唯一
                 return null;
+            }
+        }
+
+        /// <summary>
+        ///     表单控件只读
+        /// </summary>
+        /// <param name="form"></param>
+        public void ReadOnlyForm(Form form)
+        {
+            foreach (var c in FindControlsDeep(form))
+            {
+                try
+                {
+                    c.GetType().GetProperty("Readonly").SetValue(c, true);
+                    c.GetType().GetProperty("Required").SetValue(c, false);
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+
+        //重置除Code外所有表单字段
+        public virtual void ResetControl(Control control, string[] ignoreFields = null)
+        {
+            foreach (var c in FindControlsDeep(control))
+            {
+                try
+                {
+                    if (c is TextBox)
+                    {
+                        if ((ignoreFields != null && !ignoreFields.Contains(c.ID)) || ignoreFields == null)
+                        {
+                            (c as TextBox).Reset();
+                        }
+                    }
+                    else if (c is TextArea)
+                    {
+                        if ((ignoreFields != null && !ignoreFields.Contains(c.ID)) || ignoreFields == null)
+                        {
+                            (c as TextArea).Reset();
+                        }
+
+                    }
+                    else if (c is NumberBox)
+                    {
+                        if ((ignoreFields != null && !ignoreFields.Contains(c.ID)) || ignoreFields == null)
+                        {
+                            (c as NumberBox).Reset();
+                        }
+                    }
+                    else if (c is DatePicker)
+                    {
+                        if ((ignoreFields != null && !ignoreFields.Contains(c.ID)) || ignoreFields == null)
+                        {
+                            (c as DatePicker).Reset();
+                        }
+                    }
+                    else if (c is DropDownList)
+                    {
+                        if ((ignoreFields != null && !ignoreFields.Contains(c.ID)) || ignoreFields == null)
+                        {
+                            (c as DropDownList).Reset();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                }
             }
         }
 

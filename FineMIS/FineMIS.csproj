@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FineUI.Design, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ecc9e64deb5d0e2c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\FineMIS\FineMIS\FineMIS\bin\FineUI.Design.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.FriendlyUrls, Version=1.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
       <Private>True</Private>
@@ -78,9 +82,66 @@
     <Content Include="404.html" />
     <Content Include="500.html" />
     <Content Include="Default.aspx" />
+    <Content Include="extjs\ext-all.js" />
+    <Content Include="extjs\ext-part1.js" />
+    <Content Include="extjs\ext-part2.js" />
+    <Content Include="extjs\ext-theme-neptune.js" />
+    <Content Include="extjs\lang\en.js" />
+    <Content Include="extjs\lang\pt_BR.js" />
+    <Content Include="extjs\lang\ru.js" />
+    <Content Include="extjs\lang\tr.js" />
+    <Content Include="extjs\lang\zh_CN.js" />
+    <Content Include="extjs\lang\zh_TW.js" />
+    <Content Include="extjs\res\css\ux.css" />
+    <Content Include="extjs\res\ext-theme-access\all.css" />
+    <Content Include="extjs\res\ext-theme-classic\all.css" />
+    <Content Include="extjs\res\ext-theme-gray\all.css" />
+    <Content Include="extjs\res\ext-theme-neptune\all.css" />
+    <Content Include="extjs\res\images\accordion_hover.gif" />
+    <Content Include="extjs\res\images\accordion_link_hover.gif" />
+    <Content Include="extjs\res\images\accordion_link_hover2.gif" />
+    <Content Include="extjs\res\images\accordion_reset.gif" />
+    <Content Include="extjs\res\images\accordion_select.gif" />
+    <Content Include="extjs\res\images\box.gif" />
+    <Content Include="extjs\res\images\bullet_cross.png" />
+    <Content Include="extjs\res\images\check-back1.gif" />
+    <Content Include="extjs\res\images\check.gif" />
+    <Content Include="extjs\res\images\checked.gif" />
+    <Content Include="extjs\res\images\checked_disabled.gif" />
+    <Content Include="extjs\res\images\check_notuse_back.gif" />
+    <Content Include="extjs\res\images\check_notuse__1.gif" />
+    <Content Include="extjs\res\images\delete.gif" />
+    <Content Include="extjs\res\images\dialog-ok.gif" />
+    <Content Include="extjs\res\images\dialog-ok.png" />
+    <Content Include="extjs\res\images\elbow-empty.gif" />
+    <Content Include="extjs\res\images\elbow-end.gif" />
+    <Content Include="extjs\res\images\elbow-line.gif" />
+    <Content Include="extjs\res\images\elbow.gif" />
+    <Content Include="extjs\res\images\loading_24.gif" />
+    <Content Include="extjs\res\images\loading_25.gif" />
+    <Content Include="extjs\res\images\loading_32.gif" />
+    <Content Include="extjs\res\images\loading_32_2.gif" />
+    <Content Include="extjs\res\images\loading_42.gif" />
+    <Content Include="extjs\res\images\loading_50.gif" />
+    <Content Include="extjs\res\images\n-error.png" />
+    <Content Include="extjs\res\images\n-information.png" />
+    <Content Include="extjs\res\images\n-success.png" />
+    <Content Include="extjs\res\images\n-warn.png" />
+    <Content Include="extjs\res\images\pagemenu-separator.gif" />
+    <Content Include="extjs\res\images\pagemenu_toolbar_background.gif" />
+    <Content Include="extjs\res\images\s.gif" />
+    <Content Include="extjs\res\images\tick.png" />
+    <Content Include="extjs\res\images\uncheck.gif" />
+    <Content Include="extjs\res\images\unchecked.gif" />
+    <Content Include="extjs\res\images\unchecked_disabled.gif" />
+    <Content Include="extjs\res\s.gif" />
+    <Content Include="extjs\version.txt" />
+    <Content Include="extjs_builder\version.txt" />
     <Content Include="Global.asax" />
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Modules\SYS\Menu\Menu.aspx" />
+    <Content Include="Modules\SYS\Menu\Menu_detail.aspx" />
     <Content Include="PetaPoco\Models.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Models.cs</LastGenOutput>
@@ -91,6 +152,8 @@
     <Content Include="PetaPoco\PetaPoco.Core.ttinclude" />
     <Content Include="PetaPoco\PetaPoco.Generator.ttinclude" />
     <Content Include="Pages\Page.Master" />
+    <Content Include="res\icon.zip" />
+    <Content Include="res\images.zip" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -178,6 +241,8 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EnumHelper.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -197,6 +262,27 @@
     </Compile>
     <Compile Include="Models\Comparer\SYS_MENU_Comparer.cs" />
     <Compile Include="Models\SYS\SYS_MENU.cs" />
+    <Compile Include="Modules\SYS\Menu\Menu.aspx.cs">
+      <DependentUpon>Menu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Modules\SYS\Menu\Menu.aspx.designer.cs">
+      <DependentUpon>Menu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\SYS\Menu\Menu_detail.aspx.cs">
+      <DependentUpon>Menu_detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Modules\SYS\Menu\Menu_detail.aspx.designer.cs">
+      <DependentUpon>Menu_detail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ISinglePageBase.cs" />
+    <Compile Include="Pages\SingleFormPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SingleGridPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="PetaPoco\BaseModel.cs" />
     <Compile Include="PetaPoco\ExtraModels.cs" />
     <Compile Include="PetaPoco\Models.cs">
@@ -238,7 +324,15 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="extjs\res\ext-theme-access\images\" />
+    <Folder Include="extjs\res\ext-theme-classic\images\" />
+    <Folder Include="extjs\res\ext-theme-gray\images\" />
+    <Folder Include="extjs\res\ext-theme-neptune\images\" />
+    <Folder Include="extjs\src\" />
+    <Folder Include="extjs_builder\ajaxminifier\" />
+    <Folder Include="extjs_builder\res\images\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -254,7 +348,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50946</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50946/</IISUrl>
+          <IISUrl>http://localhost:50947/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -6,7 +6,7 @@
 // 
 //     Connection String Name: `connectionString`
 //     Provider:               `System.Data.SqlClient`
-//     Connection String:      `Data Source=.\SQL90;Initial Catalog=C7V3;Integrated Security = SSPI;`
+//     Connection String:      `Data Source=WM-PC\WM;Initial Catalog=C7V3;Persist Security Info=True;User ID=sa;Password=123456`
 //     Schema:                 ``
 //     Include Views:          `False`
 
@@ -19,6 +19,35 @@ using PetaPoco;
 namespace FineMIS
 {
 
+    
+	[TableName("dbo.SYS_DEPARTMENT")]
+	[PrimaryKey("Id")]
+	[ExplicitColumns]
+    public partial class SYS_DEPARTMENT : BaseModel<SYS_DEPARTMENT, long>
+    {
+		[Column] public override long Id { get; set; }
+	
+		[Column] public long? ParentId { get; set; }
+	
+		[Column] public string Name { get; set; }
+	
+		[Column] public int? SortIndex { get; set; }
+	
+		[Column] public override string CreateBy { get; set; }
+	
+		[Column] public override DateTime CreateDate { get; set; }
+	
+		[Column] public override string LastUpdateBy { get; set; }
+	
+		[Column] public override DateTime LastUpdateDate { get; set; }
+	
+		[Column] public override bool Active { get; set; }
+	
+		[Column] public override long UserBelongTo { get; set; }
+	
+		[Column] public override long CmpyBelongTo { get; set; }
+	
+	}
     
 	[TableName("dbo.SYS_MENU")]
 	[PrimaryKey("Id")]
@@ -87,69 +116,15 @@ namespace FineMIS
 	
 		[Column] public long? RoleId { get; set; }
 	
+		[Column] public string RoleName { get; set; }
+	
 		[Column] public long? MenuId { get; set; }
+	
+		[Column] public string MenuName { get; set; }
 	
 		[Column] public long? ActionId { get; set; }
 	
-		[Column] public string ControlId { get; set; }
-	
-		[Column] public string ControlType { get; set; }
-	
-		[Column] public override string CreateBy { get; set; }
-	
-		[Column] public override DateTime CreateDate { get; set; }
-	
-		[Column] public override string LastUpdateBy { get; set; }
-	
-		[Column] public override DateTime LastUpdateDate { get; set; }
-	
-		[Column] public override bool Active { get; set; }
-	
-		[Column] public override long UserBelongTo { get; set; }
-	
-		[Column] public override long CmpyBelongTo { get; set; }
-	
-	}
-    
-	[TableName("dbo.SYS_DEPARTMENT")]
-	[PrimaryKey("Id")]
-	[ExplicitColumns]
-    public partial class SYS_DEPARTMENT : BaseModel<SYS_DEPARTMENT, long>
-    {
-		[Column] public override long Id { get; set; }
-	
-		[Column] public long? ParentId { get; set; }
-	
-		[Column] public string Name { get; set; }
-	
-		[Column] public int? SortIndex { get; set; }
-	
-		[Column] public override string CreateBy { get; set; }
-	
-		[Column] public override DateTime CreateDate { get; set; }
-	
-		[Column] public override string LastUpdateBy { get; set; }
-	
-		[Column] public override DateTime LastUpdateDate { get; set; }
-	
-		[Column] public override bool Active { get; set; }
-	
-		[Column] public override long UserBelongTo { get; set; }
-	
-		[Column] public override long CmpyBelongTo { get; set; }
-	
-	}
-    
-	[TableName("dbo.SYS_ACTION")]
-	[PrimaryKey("Id")]
-	[ExplicitColumns]
-    public partial class SYS_ACTION : BaseModel<SYS_ACTION, long>
-    {
-		[Column] public override long Id { get; set; }
-	
-		[Column] public string Name { get; set; }
-	
-		[Column] public long? MenuId { get; set; }
+		[Column] public string ActionName { get; set; }
 	
 		[Column] public string ControlId { get; set; }
 	
@@ -190,6 +165,8 @@ namespace FineMIS
 	
 		[Column] public string Email { get; set; }
 	
+		[Column] public bool Enabled { get; set; }
+	
 		[Column] public override string CreateBy { get; set; }
 	
 		[Column] public override DateTime CreateDate { get; set; }
@@ -216,6 +193,39 @@ namespace FineMIS
 		[Column] public long? UserId { get; set; }
 	
 		[Column] public long? RoleId { get; set; }
+	
+		[Column] public override string CreateBy { get; set; }
+	
+		[Column] public override DateTime CreateDate { get; set; }
+	
+		[Column] public override string LastUpdateBy { get; set; }
+	
+		[Column] public override DateTime LastUpdateDate { get; set; }
+	
+		[Column] public override bool Active { get; set; }
+	
+		[Column] public override long UserBelongTo { get; set; }
+	
+		[Column] public override long CmpyBelongTo { get; set; }
+	
+	}
+    
+	[TableName("dbo.SYS_ACTION")]
+	[PrimaryKey("Id")]
+	[ExplicitColumns]
+    public partial class SYS_ACTION : BaseModel<SYS_ACTION, long>
+    {
+		[Column] public override long Id { get; set; }
+	
+		[Column] public string Name { get; set; }
+	
+		[Column] public long? MenuId { get; set; }
+	
+		[Column] public string MenuName { get; set; }
+	
+		[Column] public string ControlId { get; set; }
+	
+		[Column] public string ControlType { get; set; }
 	
 		[Column] public override string CreateBy { get; set; }
 	
