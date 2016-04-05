@@ -43,9 +43,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FineUI.Design, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ecc9e64deb5d0e2c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\FineMIS\FineMIS\FineMIS\bin\FineUI.Design.dll</HintPath>
+    <Reference Include="FineUI.Design">
+      <HintPath>..\libraries\FineUI.Design\FineUI.Design.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.FriendlyUrls, Version=1.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
