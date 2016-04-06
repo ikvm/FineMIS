@@ -33,7 +33,7 @@ namespace FineMIS
         /// <summary>
         /// Creates a new intance using the specified username and isAuthenticated bit.
         /// </summary>
-        public CustomIdentity(string userName, long userId, long cmpyId, bool isAuthenticated, long[] roleIds)
+        public CustomIdentity(string userName, long userId, long cmpyId, bool isAuthenticated, IEnumerable<long> roleIds)
         {
             Name = userName;
             RoleIds = new List<long>();

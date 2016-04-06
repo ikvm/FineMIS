@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -12,11 +10,6 @@ namespace FineMIS
 {
     public sealed class Security
     {
-        static Security()
-        {
-
-        }
-
         /// <summary>
         /// Handles the AuthenticateRequest event of the context control.
         /// </summary>
@@ -56,6 +49,9 @@ namespace FineMIS
                 cookie.Expires = DateTime.Now.AddYears(-3);
                 HttpContext.Current.Response.Cookies.Add(cookie);
             }
+
+            // reload the menus
+            SYS_MENU_Helper.Reload();
         }
 
         /// <summary>
@@ -78,7 +74,13 @@ namespace FineMIS
                 if (user != null && user.Password == pw)
                 {
                     var roles = SYS_USER_ROLE.Fetch(Sql.Builder.Where("UserId = @0", user.Id));
-                    var roleIds = roles.Aggregate("", (current, role) => current + (role.Id + ",")).TrimEnd(',');
+                    var result = new StringBuilder();
+                    foreach (var role in roles)
+                    {
+                        result.Append(role.RoleId);
+                        result.Append(",");
+                    }
+                    var roleIds = result.ToString().TrimEnd(',');
 
                     var context = HttpContext.Current;
                     var expirationDate = DateTime.Now.Add(FormsAuthentication.Timeout);

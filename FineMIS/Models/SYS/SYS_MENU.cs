@@ -77,13 +77,27 @@ namespace FineMIS
         {
             _menus = new List<SYS_MENU>();
 
-            var dbMenus = SYS_MENU.Fetch("WHERE Active=@0", true).OrderBy(m => m.SortIndex).ToList();
+            var dbMenus = new List<SYS_MENU>();
+
+            foreach (var id in Current.RoleIds)
+            {
+                dbMenus.AddRange(SYS_MENU.Fetch(
+                    Sql.Builder
+                        .LeftJoin("SYS_ROLE_MENU_ACTION")
+                        .On("SYS_MENU.Id = SYS_ROLE_MENU_ACTION.MenuId")
+                        .Where("RoleId = @0", id)
+                        .Where("SYS_MENU.Active = @0", true)
+                        .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
+                    ));
+            }
+
+            dbMenus = dbMenus.Distinct(new SYS_MENU_Comparer()).ToList();
 
             ResolveMenuCollection(dbMenus, 0, 0);
         }
 
 
-        private static int ResolveMenuCollection(List<SYS_MENU> dbMenus, long? parentId, int level)
+        private static int ResolveMenuCollection(List<SYS_MENU> dbMenus, long parentId, int level)
         {
             var count = 0;
 
