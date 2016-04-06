@@ -6,7 +6,7 @@
 // 
 //     Connection String Name: `connectionString`
 //     Provider:               `System.Data.SqlClient`
-//     Connection String:      `Data Source=WM-PC\WM;Initial Catalog=C7V3;Persist Security Info=True;User ID=sa;Password=123456`
+//     Connection String:      `Data Source=.\SQL90;Initial Catalog=C7V3;Integrated Security = SSPI;`
 //     Schema:                 ``
 //     Include Views:          `False`
 
@@ -116,19 +116,9 @@ namespace FineMIS
 	
 		[Column] public long? RoleId { get; set; }
 	
-		[Column] public string RoleName { get; set; }
-	
 		[Column] public long? MenuId { get; set; }
 	
-		[Column] public string MenuName { get; set; }
-	
 		[Column] public long? ActionId { get; set; }
-	
-		[Column] public string ActionName { get; set; }
-	
-		[Column] public string ControlId { get; set; }
-	
-		[Column] public string ControlType { get; set; }
 	
 		[Column] public override string CreateBy { get; set; }
 	
@@ -220,8 +210,6 @@ namespace FineMIS
 		[Column] public string Name { get; set; }
 	
 		[Column] public long? MenuId { get; set; }
-	
-		[Column] public string MenuName { get; set; }
 	
 		[Column] public string ControlId { get; set; }
 	
