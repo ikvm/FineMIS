@@ -85,6 +85,11 @@ namespace FineMIS
                     Sql.Builder
                         .LeftJoin("SYS_ROLE_MENU_ACTION")
                         .On("SYS_MENU.Id = SYS_ROLE_MENU_ACTION.MenuId")
+                        // at least have one action is ok to view
+                        // or specify the 'view' action
+                        //.LeftJoin("SYS_ACTION")
+                        //.On("SYS_ACTION.Id = SYS_ROLE_MENU_ACTION.ActionId")
+                        //.Where("SYS_ACTION.Name = @0", "View")
                         .Where("RoleId = @0", id)
                         .Where("SYS_MENU.Active = @0", true)
                         .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
