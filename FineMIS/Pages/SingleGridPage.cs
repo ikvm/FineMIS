@@ -42,6 +42,7 @@ namespace FineMIS.Pages
                     ID = "btnPostBack",
                     Visible = false
                 };
+                btnPostBack.Click += btnPostBack_Click;
                 MainGrid.Toolbars.First().Items.Add(btnPostBack);
             }
         }
