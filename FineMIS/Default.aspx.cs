@@ -5,7 +5,6 @@ using System.Web.Security;
 using FineUI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using StackExchange.Profiling;
 
 namespace FineMIS
 {
@@ -63,12 +62,13 @@ namespace FineMIS
             return jo;
         }
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            // 显示MiniProfiler
-            Response.Write(MiniProfiler.RenderIncludes(RenderPosition.BottomRight));
-        }
+        //protected override void OnPreRender(EventArgs e)
+        //{
+        //    base.OnPreRender(e);
+        //    // 显示MiniProfiler
+        //    Response.Write(
+        //        StackExchange.Profiling.MiniProfiler.RenderIncludes(StackExchange.Profiling.RenderPosition.BottomRight));
+        //}
 
         #endregion
 

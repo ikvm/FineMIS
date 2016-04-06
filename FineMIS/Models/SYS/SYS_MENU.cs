@@ -47,6 +47,7 @@ namespace FineMIS
         {
         }
 
+        [ThreadStatic]
         private static List<SYS_MENU> _menus;
         private static readonly object Lock = new object();
 
