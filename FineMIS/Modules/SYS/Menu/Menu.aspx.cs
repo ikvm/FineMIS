@@ -21,7 +21,7 @@ namespace FineMIS.Modules.SYS.Menu
         /// </summary>
         protected override void LoadData()
         {
-            var menus = SYS_MENU.Menus; //未缓存的数据查询时需要拼接SQL
+            var menus = SYS_MENU_Helper.Menus; //未缓存的数据查询时需要拼接SQL
             //拼接查询的SQL
             var search = ttbFullTextSearch.Text;
             if (!string.IsNullOrEmpty(search))
@@ -43,7 +43,7 @@ namespace FineMIS.Modules.SYS.Menu
         protected override void DeleteData()
         {
             IEnumerable<object> selectIds = GetSelectedIds(MainGrid);
-            SYS_MENU.Delete(Sql.Builder.Where("Id IN(@0)", selectIds),true);
+            SYS_MENU.Delete(Sql.Builder.Where("Id IN(@0)", selectIds), true);
         }
 
         /// <summary>

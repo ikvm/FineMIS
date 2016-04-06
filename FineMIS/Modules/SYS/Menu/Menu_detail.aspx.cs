@@ -34,7 +34,7 @@ namespace FineMIS.Modules.SYS.Menu
         /// </summary>
         private void BindParentId()
         {
-            var mys = ResolveDdl(SYS_MENU.Menus, (int)Id);
+            var mys = ResolveDdl(SYS_MENU_Helper.Menus, (int)Id);
             // 绑定到下拉列表（启用模拟树功能和不可选择项功能）
             ParentId.EnableSimulateTree = true;
             ParentId.DataTextField = "Name";
@@ -95,14 +95,16 @@ namespace FineMIS.Modules.SYS.Menu
             switch (Action)
             {
                 case ACTION.INSERT:
-                    menu = new SYS_MENU();
-                    menu.Name = Name.Text;
-                    menu.ImageUrl = ImageUrl.Text;
-                    menu.NavigateUrl = NavigateUrl.Text;
-                    menu.ParentId = SafeConvert.ToInt64(ParentId.Text);
-                    menu.SortIndex = SafeConvert.ToInt32(SortIndex.Text);
+                    menu = new SYS_MENU
+                    {
+                        Name = Name.Text,
+                        ImageUrl = ImageUrl.Text,
+                        NavigateUrl = NavigateUrl.Text,
+                        ParentId = ParentId.Text.ToInt64(),
+                        SortIndex = SortIndex.Text.ToInt32()
+                    };
                     menu.Insert();
-                    SYS_MENU.Reload();
+                    SYS_MENU_Helper.Reload();
                     break;
                 case ACTION.UPDATE:
                     menu = SYS_MENU.SingleOrDefault(Sql.Builder.Where("Id=@0", Id));
@@ -111,10 +113,10 @@ namespace FineMIS.Modules.SYS.Menu
                         menu.Name = Name.Text;
                         menu.ImageUrl = ImageUrl.Text;
                         menu.NavigateUrl = NavigateUrl.Text;
-                        menu.ParentId = SafeConvert.ToInt64(ParentId.Text);
-                        menu.SortIndex = SafeConvert.ToInt32(SortIndex.Text);
+                        menu.ParentId = ParentId.Text.ToInt64();
+                        menu.SortIndex = SortIndex.Text.ToInt32();
                         menu.Update();
-                        SYS_MENU.Reload();
+                        SYS_MENU_Helper.Reload();
                     }
                     break;
                 case ACTION.DETAIL:

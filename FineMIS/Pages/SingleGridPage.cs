@@ -54,7 +54,7 @@ namespace FineMIS.Pages
         {
             MainGrid.PageSize = 20;
         }
-        
+
 
         #endregion
 
@@ -474,7 +474,7 @@ namespace FineMIS.Pages
                 // 强制刷新
                 BindGrid();
             }
-            else if (SafeConvert.ToBoolean(Session[FORCE_REFRESH]))
+            else if (Session[FORCE_REFRESH].ToBoolean())
             {
                 // 强制刷新
                 BindGrid();

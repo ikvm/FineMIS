@@ -22,8 +22,8 @@ namespace FineMIS.Pages
         #region 页面初始化
         protected override void OnInit(EventArgs e)
         {
-            Action = (ACTION)SafeConvert.ToInt32(Request["action"]);
-            Id = SafeConvert.ToInt64(Request["id"]);
+            Action = (ACTION)Request["action"].ToInt32();
+            Id = Request["id"].ToInt64();
             base.OnInit(e);
             InitForm();
         }
@@ -136,7 +136,7 @@ namespace FineMIS.Pages
             try
             {
                 // 如果已经修改过数据，那么回发时应当刷新表格
-                PageContext.RegisterStartupScript(SafeConvert.ToBoolean(Session[FORCE_REFRESH])
+                PageContext.RegisterStartupScript(Session[FORCE_REFRESH].ToBoolean()
                     ? ActiveWindow.GetHidePostBackReference(FORCE_REFRESH)
                     : ActiveWindow.GetHideReference());
             }

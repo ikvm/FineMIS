@@ -50,16 +50,19 @@ namespace FineMIS
             CmpyId = cmpyId;
             IsAuthenticated = isAuthenticated;
 
-            var userRoles = SYS_USER_ROLE.Fetch(Sql.Builder
-                .Where("UserId = @0", UserId)
-                .Where("Active = @0", true)
+            var userRoles = SYS_USER_ROLE.Fetch(
+                Sql.Builder
+                    .Where("UserId = @0", UserId)
+                    .Where("Active = @0", true)
                 );
 
             if (userRoles.Count > 0)
+            {
                 foreach (var userRole in userRoles)
                 {
                     RoleIds.Add(userRole.RoleId.ToInt64());
                 }
+            }
         }
     }
 }

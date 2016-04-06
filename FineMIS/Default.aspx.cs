@@ -15,7 +15,7 @@ namespace FineMIS
         protected void Page_Init(object sender, EventArgs e)
         {
             // 用户可见的菜单列表
-            var menus = SYS_MENU.Menus;
+            var menus = SYS_MENU_Helper.Menus;
             if (menus.Count == 0)
             {
                 // todo
