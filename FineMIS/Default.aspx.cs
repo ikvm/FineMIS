@@ -18,13 +18,11 @@ namespace FineMIS
             var menus = SYS_MENU_Helper.Menus;
             if (menus.Count == 0)
             {
-                // todo
-                // 401
                 // 清除cookie
-                // 返回未授权页面
                 Security.SignOut();
 
-                Response.Redirect("~/401.html");
+                // 返回未授权页面
+                Response.Redirect("~/Error/401.html");
 
                 return;
             }
