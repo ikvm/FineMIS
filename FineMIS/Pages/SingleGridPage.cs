@@ -8,7 +8,14 @@ namespace FineMIS.Pages
 {
     public abstract class SingleGridPage : PageBase, ISinglePageBase
     {
+        #region 属性
+
+        /// <summary>
+        /// 主表格实例
+        /// </summary>
         protected abstract Grid MainGrid { get; }
+
+        #endregion
 
         #region 页面初始化
 
@@ -26,6 +33,7 @@ namespace FineMIS.Pages
             {
                 BindGrid();
             }
+
             InitControls();
         }
 
@@ -459,7 +467,6 @@ namespace FineMIS.Pages
                 // 强制刷新
                 BindGrid();
             }
-            //TODO：删除操作是不是可以不用放到ProcessArgument中？
             //删除操作
             else if (argument.Contains(ACTION.DELETE.ToString()))
             {

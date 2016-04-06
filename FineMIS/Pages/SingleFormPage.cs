@@ -9,12 +9,15 @@ namespace FineMIS.Pages
 {
     public abstract class SingleFormPage : PageBase, ISinglePageBase
     {
-        #region property
+        #region 属性
+
         /// <summary>
         /// 主表单实例
         /// </summary>
         public abstract Form MainForm { get; }
+
         protected ACTION Action { get; set; }
+
         protected long Id { get; set; }
 
         #endregion
@@ -52,7 +55,6 @@ namespace FineMIS.Pages
             throw new NotImplementedException();
         }
         #endregion
-
 
         #region 常用按钮事件
         /// <summary>
@@ -146,7 +148,6 @@ namespace FineMIS.Pages
             }
         }
         #endregion
-
 
         #region 表单页面可能弹出新的页面（如：选择列表界面）
         /// <summary>
