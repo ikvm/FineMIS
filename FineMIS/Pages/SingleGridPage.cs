@@ -26,6 +26,24 @@ namespace FineMIS.Pages
             {
                 BindGrid();
             }
+            InitControls();
+        }
+
+
+        /// <summary>
+        /// 初始化控件
+        /// </summary>
+        private void InitControls()
+        {
+            if (MainGrid.Toolbars.Count > 0 && MainGrid.Toolbars.First() != null)
+            {
+                Button btnPostBack = new Button
+                {
+                    ID = "btnPostBack",
+                    Visible = false
+                };
+                MainGrid.Toolbars.First().Items.Add(btnPostBack);
+            }
         }
 
         /// <summary>
@@ -249,7 +267,7 @@ namespace FineMIS.Pages
             //}
             else
             {
-                var btnPostBack = MainGrid.FindControl("Toolbar").FindControl("btnPostBack") as Button;
+                var btnPostBack = FindControlDeep(MainGrid, "btnPostBack") as Button;
                 if (btnPostBack != null)
                     MessageBox.Show($"已选中{MainGrid.SelectedRowIndexArray.Length}行,是否确认删除选中数据?", "确认删除",
                         buttons: MessageBoxButtons.OKCANCEL,
@@ -271,7 +289,7 @@ namespace FineMIS.Pages
             }
             else
             {
-                var btnPostBack = MainGrid.FindControl("btnPostBack") as Button;
+                var btnPostBack = FindControlDeep(MainGrid, "btnPostBack") as Button;
                 if (btnPostBack != null)
                     MessageBox.Show($"已选中{MainGrid.SelectedRowIndexArray.Length}行,审核或拒绝选中数据?", "确认审核",
                         buttons: MessageBoxButtons.YESNOCANCEL,
@@ -296,7 +314,7 @@ namespace FineMIS.Pages
             }
             else
             {
-                var btnPostBack = MainGrid.FindControl("btnPostBack") as Button;
+                var btnPostBack = FindControlDeep(MainGrid, "btnPostBack") as Button;
                 if (btnPostBack != null)
                     MessageBox.Show($"已选中{MainGrid.SelectedRowIndexArray.Length}行,是否确认反审选中数据?", "确认反审",
                         buttons: MessageBoxButtons.OKCANCEL,
