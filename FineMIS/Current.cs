@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace FineMIS
@@ -30,6 +31,23 @@ namespace FineMIS
                 (Context.User.Identity as CustomIdentity) != null
                     ? ((CustomIdentity)Context.User.Identity).RoleIds
                     : new List<long>();
+
+        /// <summary>
+        /// RoleIds split by comma
+        /// </summary>
+        public static string RoleIdsString
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                foreach (var id in RoleIds)
+                {
+                    sb.Append(id);
+                    sb.Append(",");
+                }
+                return sb.ToString().TrimEnd(',');
+            }
+        }
 
         /// <summary>
         /// Shortcut to HttpContext.Current.User.Identity.UserId

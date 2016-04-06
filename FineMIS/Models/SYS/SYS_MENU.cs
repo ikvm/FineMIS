@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FineMIS.Controls;
+using OutOfMemory;
 using PetaPoco;
 
 namespace FineMIS
@@ -77,24 +78,19 @@ namespace FineMIS
         {
             _menus = new List<SYS_MENU>();
 
-            var dbMenus = new List<SYS_MENU>();
-
-            foreach (var id in Current.RoleIds)
-            {
-                dbMenus.AddRange(SYS_MENU.Fetch(
-                    Sql.Builder
-                        .LeftJoin("SYS_ROLE_MENU_ACTION")
-                        .On("SYS_MENU.Id = SYS_ROLE_MENU_ACTION.MenuId")
-                        // at least have one action is ok to view
-                        // or specify the 'view' action
-                        //.LeftJoin("SYS_ACTION")
-                        //.On("SYS_ACTION.Id = SYS_ROLE_MENU_ACTION.ActionId")
-                        //.Where("SYS_ACTION.Name = @0", "View")
-                        .Where("RoleId = @0", id)
-                        .Where("SYS_MENU.Active = @0", true)
-                        .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
-                    ));
-            }
+            var dbMenus = SYS_MENU.Fetch(
+                Sql.Builder
+                    .LeftJoin("SYS_ROLE_MENU_ACTION")
+                    .On("SYS_MENU.Id = SYS_ROLE_MENU_ACTION.MenuId")
+                    // at least have one action is ok to view
+                    // or specify the 'view' action
+                    //.LeftJoin("SYS_ACTION")
+                    //.On("SYS_ACTION.Id = SYS_ROLE_MENU_ACTION.ActionId")
+                    //.Where("SYS_ACTION.Name = @0", "View")
+                    .Where("RoleId IN (@ids)", new { ids = Current.RoleIds.ToArray() })
+                    .Where("SYS_MENU.Active = @0", true)
+                    .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
+                );
 
             dbMenus = dbMenus.Distinct(new SYS_MENU_Comparer()).ToList();
 

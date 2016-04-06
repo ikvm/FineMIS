@@ -29,6 +29,7 @@
                 padding: 3px 12px;
             }*/
 
+        /* menu items */
         div.x-grid-cell-inner.x-grid-cell-inner-treecolumn {
             margin-top: 2px;
             margin-bottom: 2px;

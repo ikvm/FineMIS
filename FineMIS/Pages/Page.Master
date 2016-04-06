@@ -51,9 +51,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <f:PageManager ID="PageManager1" AutoSizePanelID="Panel1" runat="server" />
-        <asp:ContentPlaceHolder ID="Main" runat="server">
-        </asp:ContentPlaceHolder>
+        <f:PageManager ID="PageManager1" AutoSizePanelID="MainPanel" runat="server" />
+        <f:CPHConnector ID="CPHConnector" runat="server">
+            <asp:ContentPlaceHolder ID="Main" runat="server">
+            </asp:ContentPlaceHolder>
+        </f:CPHConnector>
         <f:Window ID="Window1" Title="编辑" Hidden="true" EnableIFrame="true" runat="server"
             CloseAction="HidePostBack" EnableMaximize="true" EnableResize="true"
             OnClose="Window1_Close" IsModal="True">
