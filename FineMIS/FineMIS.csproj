@@ -129,7 +129,6 @@
     <Content Include="extjs_builder\res\Tree.css" />
     <Content Include="extjs_builder\version.txt" />
     <Content Include="Global.asax" />
-    <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Modules\SYS\Menu\Menu.aspx" />
     <Content Include="Modules\SYS\Menu\Menu_detail.aspx" />
@@ -145,6 +144,7 @@
     <Content Include="Pages\Page.Master" />
     <Content Include="res\icon.zip" />
     <Content Include="res\images.zip" />
+    <Content Include="res\js\jquery.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -227,13 +227,6 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Index.aspx.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Index.aspx.designer.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

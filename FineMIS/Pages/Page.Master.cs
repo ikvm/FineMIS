@@ -6,7 +6,7 @@ namespace FineMIS.Pages
 {
     public partial class Page : MasterPage
     {
-        public ISinglePageBase PageBase => (ISinglePageBase) Page;
+        public ISinglePageBase PageBase => (ISinglePageBase)Page;
 
         public Window Window => Window1;
 

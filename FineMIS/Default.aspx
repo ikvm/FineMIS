@@ -156,14 +156,14 @@
                 // refreshWhenExist： 添加选项卡时，如果选项卡已经存在，是否刷新内部IFrame
                 F.util.addMainTab(mainTabStrip, id, url, text, icon, null, refreshWhenExist);
 
-                //// todo...
-                //// 当点击切换Tab页时增加一个IFrame内事件
-                //// 注意这里只会在IFrame页面已经加载到Tab列表中并重新通过addMainTab方法加载时才会有效
-                //// 页面之间的切换并不会触发这个事件
-                //// 未加载过的页面即新建的页面也不会触发这个事件，但是新建页面时会触发页面自己的Page_Load事件
-                //// 因此需要在两个不同的地方进行处理
-                //// 同时，在所有需要触发事件的IFrame页面中必须定义一个名为onTabReload的方法
-                //// 可以利用母板页或者PageBase来统一增加该脚本
+                // todo...
+                // 当点击切换Tab页时增加一个IFrame内事件
+                // 注意这里只会在IFrame页面已经加载到Tab列表中并重新通过addMainTab方法加载时才会有效
+                // 页面之间的切换并不会触发这个事件
+                // 未加载过的页面即新建的页面也不会触发这个事件，但是新建页面时会触发页面自己的Page_Load事件
+                // 因此需要在两个不同的地方进行处理
+                // 同时，在所有需要触发事件的IFrame页面中必须定义一个名为onTabReload的方法
+                // 可以利用母板页或者PageBase来统一增加该脚本
                 //var activeTab = mainTabStrip.getActiveTab();
                 //if (activeTab) {
                 //    var iframe = activeTab.body.query('iframe')[0];
