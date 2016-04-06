@@ -9,10 +9,8 @@
         SortDirection="DESC" AllowPaging="true" IsDatabasePaging="true"
         OnRowCommand="grid_RowCommand" OnPageIndexChange="grid_PageIndexChange">
         <Toolbars>
-            <f:Toolbar ID="Toolbar" runat="server">
+            <f:Toolbar runat="server">
                 <Items>
-                    <f:Button ID="btnPostBack" Icon="ArrowRefresh" runat="server" Hidden="True" OnClick="btnPostBack_Click" >
-                    </f:Button>
                     <f:Button ID="btnRefresh" Icon="ArrowRefresh" runat="server" Text="刷新" OnClick="btnRefresh_Click">
                     </f:Button>
                     <f:Button ID="btnInsert" Icon="Add" runat="server" Text="新增" OnClick="btnInsert_Click">
