@@ -10,6 +10,7 @@
 <#@ import namespace="System.Data" #>
 <#@ import namespace="System.Data.SqlClient" #>
 <#@ import namespace="System.Data.Common" #>
+<#@ import namespace="System.Data.OleDb" #>
 <#@ import namespace="System.Diagnostics" #>
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.IO" #>
@@ -32,6 +33,8 @@
 	* MySQL
 	* PostGreSQL
 	* Oracle
+	* SQLite
+	* OleDb for access
 
  For connection and provider settings the template will look for the web.config or app.config file of the 
  containing Visual Studio project.  It will not however read DbProvider settings from this file.
@@ -54,6 +57,7 @@
 			<add name="MySQL Data Provider" invariant="MySql.Data.MySqlClient" description=".Net Framework Data Provider for MySQL" type="MySql.Data.MySqlClient.MySqlClientFactory, MySql.Data, Version=6.3.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d"/>
 			<add name="Microsoft SQL Server Compact Data Provider" invariant="System.Data.SqlServerCe.3.5" description=".NET Framework Data Provider for Microsoft SQL Server Compact" type="System.Data.SqlServerCe.SqlCeProviderFactory, System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"/><add name="Microsoft SQL Server Compact Data Provider 4.0" invariant="System.Data.SqlServerCe.4.0" description=".NET Framework Data Provider for Microsoft SQL Server Compact" type="System.Data.SqlServerCe.SqlCeProviderFactory, System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"/>
 			<add name="Npgsql Data Provider" invariant="Npgsql" support="FF" description=".Net Framework Data Provider for Postgresql Server" type="Npgsql.NpgsqlFactory, Npgsql, Version=2.0.11.91, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7" />
+			<add name="SQLite Data Provider" invariant="System.Data.SQLite" description=".NET Framework Data Provider for SQLite" type="System.Data.SQLite.SQLiteFactory, System.Data.SQLite, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139"/>
 		</DbProviderFactories>
 	</system.data>
 
@@ -396,6 +400,16 @@ Tables LoadTables()
 			{
 				// Oracle
 				reader=new OracleSchemaReader();
+			}
+			else if (_factory.GetType().Name == "SQLiteFactory")
+			{
+				// SQLite
+				reader=new SQLiteSchemaReader();
+			}
+			else if (_factory.GetType().Name == "OleDbFactory")
+			{
+				// OleDb for Access
+				reader=new OleDbSchemaReader();
 			}
 			else
 			{
@@ -1346,6 +1360,335 @@ from USER_VIEWS";
 	  
 }
 
+class OleDbSchemaReader : SchemaReader
+{
+    // SchemaReader.ReadSchema
+    public override Tables ReadSchema(DbConnection connection, DbProviderFactory factory)
+    {
+        var result = new Tables();
+
+        _connection = connection;
+        _factory = factory;
+
+
+        var cnn = _connection as OleDbConnection;
+        if (cnn != null)
+        {
+            var dt = cnn.GetOleDbSchemaTable(
+                OleDbSchemaGuid.Tables,
+                new object[] { null, null, null, "TABLE" });
+
+            foreach (DataRow row in dt.Rows)
+            {
+                Table tbl = new Table();
+                tbl.Name = row["TABLE_NAME"].ToString();
+                tbl.Schema = row["TABLE_SCHEMA"].ToString();
+                // Access do not support view
+                tbl.IsView = false;
+                tbl.CleanName = CleanUp(tbl.Name);
+                tbl.ClassName = Inflector.MakeSingular(tbl.CleanName);
+
+                result.Add(tbl);
+            }
+        }
+
+        foreach (var tbl in result)
+        {
+            tbl.Columns = LoadColumns(tbl);
+
+            // Mark the primary key
+            string PrimaryKey = GetPK(tbl.Name);
+            var pkColumn = tbl.Columns.SingleOrDefault(x => x.Name.ToLower().Trim() == PrimaryKey.ToLower().Trim());
+            if (pkColumn != null)
+            {
+                pkColumn.IsPK = true;
+            }
+        }
+
+
+        return result;
+    }
+
+    DbConnection _connection;
+    DbProviderFactory _factory;
+
+
+    List<Column> LoadColumns(Table tbl)
+    {
+        var result = new List<Column>();
+        var cnn = _connection as OleDbConnection;
+        if (cnn != null)
+        {
+            var dt = cnn.GetOleDbSchemaTable(
+                OleDbSchemaGuid.Columns,
+                new object[] { null, null, tbl.Name, null });
+
+            foreach (DataColumn col in dt.Columns)
+            {
+                Console.WriteLine(col.ColumnName);
+            }
+
+            foreach (DataRow row in dt.Select("", "ORDINAL_POSITION ASC"))
+            {
+                Console.WriteLine(row["COLUMN_NAME"] + "::" + row["DATA_TYPE"]);
+
+                Column col = new Column();
+                col.Name = row["COLUMN_NAME"].ToString();
+                col.PropertyName = CleanUp(col.Name);
+                col.PropertyType = GetPropertyType(row["DATA_TYPE"].ToString());
+                col.IsNullable = Convert.ToBoolean(row["IS_NULLABLE"]);
+                // OleDb does not support an identity column
+                // so just see if there is an 'ID' column instead
+                col.IsAutoIncrement = col.Name == "ID" && !col.IsNullable;
+                result.Add(col);
+            }
+        }
+
+        return result;
+    }
+
+    string GetPK(string table)
+    {
+        var cnn = _connection as OleDbConnection;
+        if (cnn != null)
+        {
+            var dt = cnn.GetOleDbSchemaTable(
+                OleDbSchemaGuid.Primary_Keys,
+                new object[] { null, null, table });
+
+            if (dt.Rows.Count > 0)
+            {
+                return dt.Rows[0]["COLUMN_NAME"].ToString();
+            }
+        }
+
+        return "";
+    }
+
+    // see https://msdn.microsoft.com/zh-cn/dynamics/microsoft.sqlserver.dts.runtime.wrapper.datatype
+    string GetPropertyType(string sqlType)
+    {
+        string sysType = "string";
+        switch (sqlType)
+        {
+            case "20":
+            case "21":
+                sysType = "long";
+                break;
+            case "2":
+            case "18":
+                sysType = "short";
+                break;
+            case "3":
+            case "19":
+                sysType = "int";
+                break;
+            case "72":
+                sysType = "Guid";
+                break;
+            case "7":
+            case "133":
+            case "134":
+            case "135":
+            case "145":
+            case "304":
+                sysType = "DateTime";
+                break;
+            case "5":
+                sysType = "double";
+                break;
+            case "4":
+                sysType = "float";
+                break;
+            case "6":
+            case "14":
+            case "131":
+                sysType = "decimal";
+                break;
+            case "16":
+            case "17":
+            case "128":
+                sysType = "byte";
+                break;
+            case "11":
+                sysType = "bool";
+                break;
+            case "301":
+                sysType = "byte[]";
+                break;
+        }
+        return sysType;
+    }
+}
+
+class SQLiteSchemaReader : SchemaReader
+{
+    // SchemaReader.ReadSchema
+    public override Tables ReadSchema(DbConnection connection, DbProviderFactory factory)
+    {
+        var result = new Tables();
+
+        _connection = connection;
+        _factory = factory;
+
+        var cmd = _factory.CreateCommand();
+        cmd.Connection = connection;
+        cmd.CommandText = TABLE_SQL;
+
+        //pull the tables in a reader
+        using (cmd)
+        {
+
+            using (var rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    Table tbl = new Table();
+                    tbl.Name = rdr["name"].ToString();
+                    tbl.Schema = null;
+                    tbl.IsView = String.Compare(rdr["type"].ToString(), "view", StringComparison.OrdinalIgnoreCase) == 0;
+                    tbl.CleanName = CleanUp(tbl.Name);
+                    tbl.ClassName = Inflector.MakeSingular(tbl.CleanName);
+
+                    result.Add(tbl);
+                }
+            }
+        }
+
+        foreach (var tbl in result)
+        {
+            tbl.Columns = LoadColumns(tbl);
+
+            // Mark the primary key
+            string PrimaryKey = GetPK(tbl.Name);
+            var pkColumn = tbl.Columns.SingleOrDefault(x => x.Name.ToLower().Trim() == PrimaryKey.ToLower().Trim());
+            if (pkColumn != null)
+            {
+                pkColumn.IsPK = true;
+            }
+        }
+
+
+        return result;
+    }
+
+    DbConnection _connection;
+    DbProviderFactory _factory;
+
+
+    List<Column> LoadColumns(Table tbl)
+    {
+
+        using (var cmd = _factory.CreateCommand())
+        {
+            cmd.Connection = _connection;
+            cmd.CommandText = string.Format(COLUMN_SQL, tbl.Name);
+
+            var result = new List<Column>();
+            using (IDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    Column col = new Column();
+                    col.Name = rdr["name"].ToString();
+                    col.PropertyName = CleanUp(col.Name);
+                    col.PropertyType = GetPropertyType(rdr["type"].ToString());
+                    col.IsNullable = rdr["notnull"].ToString() == "0";
+                    if (col.IsPK)
+                        col.IsAutoIncrement = rdr["sql"].ToString().ToUpper().Contains("AUTOINCREMENT");
+                    else
+                        col.IsAutoIncrement = false;
+
+                    result.Add(col);
+                }
+            }
+
+            return result;
+        }
+    }
+
+    string GetPK(string table)
+    {
+        using (var cmd = _factory.CreateCommand())
+        {
+            cmd.Connection = _connection;
+            cmd.CommandText = string.Format(COLUMN_SQL, table);
+
+            using (IDataReader rdr = cmd.ExecuteReader())
+            {
+                if (rdr.Read())
+                {
+                    if (rdr["pk"].ToString() == "1")
+                        return rdr["name"].ToString();
+                }
+            }
+        }
+
+        return "";
+    }
+
+    string GetPropertyType(string sqlType)
+    {
+        string sysType = "string";
+        switch (sqlType.ToLower())
+        {
+            case "integer":
+            case "int":
+            case "tinyint":
+            case "smallint":
+            case "mediumint":
+            case "int2":
+            case "int8":
+                sysType = "int";
+                break;
+            case "bigint":
+            case "unsigned big int":
+                sysType = "long";
+                break;
+            case "uniqueidentifier":
+                sysType = "Guid";
+                break;
+            case "smalldatetime":
+            case "datetime":
+            case "date":
+                sysType = "DateTime";
+                break;
+            case "float":
+            case "double precision":
+            case "double":
+                sysType = "double";
+                break;
+            case "real":
+            case "numeric":
+            case "smallmoney":
+            case "decimal":
+            case "money":
+            case "number":
+                sysType = "decimal";
+                break;
+            case "bit":
+                sysType = "bool";
+                break;
+            case "image":
+            case "binary":
+            case "varbinary":
+            case "timestamp":
+                sysType = "byte[]";
+                break;
+        }
+
+        return sysType;
+    }
+
+
+
+
+    const string TABLE_SQL =
+        @"SELECT name, type , sql FROM sqlite_master WHERE type IN ('table','view') and name not LIKE 'sqlite_sequence%'";
+
+    const string COLUMN_SQL = @"PRAGMA table_info({0})";
+
+}
 
 
 
