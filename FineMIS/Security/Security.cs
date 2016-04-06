@@ -23,38 +23,25 @@ namespace FineMIS
         public static void AuthenticateRequest()
         {
             // default to an empty/unauthenticated user to assign to context.User.
-            var identity = new CustomIdentity(string.Empty, 0, 0, false);
+            var identity = new CustomIdentity(string.Empty, 0, 0, false, null);
             var principal = new CustomPrincipal(identity);
 
-            var context = HttpContext.Current;
-
-            var authCookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (authCookie != null)
+            if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                FormsAuthenticationTicket authTicket;
-                try
+                var ticket = (HttpContext.Current.User.Identity as FormsIdentity)?.Ticket;
+                if (!string.IsNullOrWhiteSpace(ticket?.UserData))
                 {
-                    authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                }
-                catch (Exception)
-                {
-                    context.Request.Cookies.Remove(FormsAuthentication.FormsCookieName);
-                    authTicket = null;
-
-                    // log here
-                }
-
-                if (!string.IsNullOrWhiteSpace(authTicket?.UserData))
-                {
-                    var datas = authTicket.UserData.Split('|');
-                    if (datas.Length == 3)
+                    var datas = ticket.UserData.Split('|');
+                    if (datas.Length == 4)
                     {
-                        identity = new CustomIdentity(datas[0], datas[1].ToInt64(), datas[2].ToInt64(), true);
+                        identity = new CustomIdentity(datas[0], datas[1].ToInt64(), datas[2].ToInt64(), true,
+                            datas[3].Split(',').ToInt64Array());
                         principal = new CustomPrincipal(identity);
                     }
                 }
             }
-            context.User = principal;
+
+            HttpContext.Current.User = principal;
         }
 
         /// <summary>
@@ -90,6 +77,9 @@ namespace FineMIS
                 // todo hash password
                 if (user != null && user.Password == pw)
                 {
+                    var roles = SYS_USER_ROLE.Fetch(Sql.Builder.Where("UserId = @0", user.Id));
+                    var roleIds = roles.Aggregate("", (current, role) => current + (role.Id + ",")).TrimEnd(',');
+
                     var context = HttpContext.Current;
                     var expirationDate = DateTime.Now.Add(FormsAuthentication.Timeout);
 
@@ -99,7 +89,7 @@ namespace FineMIS
                         DateTime.Now,
                         expirationDate,
                         rememberMe,
-                        $"{user.Name}|{user.Id}|{user.CmpyBelongTo}",
+                        $"{user.Name}|{user.Id}|{user.CmpyBelongTo}|{roleIds}",
                         FormsAuthentication.FormsCookiePath
                         );
 

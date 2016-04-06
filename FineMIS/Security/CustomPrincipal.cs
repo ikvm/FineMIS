@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web;
-using System.Web.Security;
+﻿using System.Security.Principal;
 
 namespace FineMIS
 {
@@ -12,15 +7,10 @@ namespace FineMIS
     /// </summary>
     public class CustomPrincipal : IPrincipal
     {
-        private IIdentity _identity;
-
         /// <summary>
         /// Gets the identity of the current principal.
         /// </summary>
-        public IIdentity Identity
-        {
-            get { return _identity; }
-        }
+        public IIdentity Identity { get; }
 
         public bool IsInRole(string roleName)
         {
@@ -33,7 +23,7 @@ namespace FineMIS
         /// <param name="identity"></param>
         public CustomPrincipal(IIdentity identity)
         {
-            _identity = identity;
+            Identity = identity;
         }
     }
 }

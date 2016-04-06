@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Web;
-using System.Web.Security;
-using OutOfMemory;
-using PetaPoco;
 
 namespace FineMIS
 {
@@ -38,31 +33,14 @@ namespace FineMIS
         /// <summary>
         /// Creates a new intance using the specified username and isAuthenticated bit.
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="userId"></param>
-        /// <param name="cmpyId"></param>
-        /// <param name="isAuthenticated">Whether or not the user is authenticated.</param>
-        public CustomIdentity(string userName, long userId, long cmpyId, bool isAuthenticated)
+        public CustomIdentity(string userName, long userId, long cmpyId, bool isAuthenticated, long[] roleIds)
         {
             Name = userName;
             RoleIds = new List<long>();
             UserId = userId;
             CmpyId = cmpyId;
             IsAuthenticated = isAuthenticated;
-
-            var userRoles = SYS_USER_ROLE.Fetch(
-                Sql.Builder
-                    .Where("UserId = @0", UserId)
-                    .Where("Active = @0", true)
-                );
-
-            if (userRoles.Count > 0)
-            {
-                foreach (var userRole in userRoles)
-                {
-                    RoleIds.Add(userRole.RoleId.ToInt64());
-                }
-            }
+            RoleIds = roleIds?.ToList() ?? new List<long>();
         }
     }
 }
