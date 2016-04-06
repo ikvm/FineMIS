@@ -87,8 +87,7 @@ namespace FineMIS
             {
                 var user = SYS_USER.SingleOrDefault(Sql.Builder.Where("UserName = @0", un).Where("Active = @0", true));
 
-                // todo
-                // hash password
+                // todo hash password
                 if (user != null && user.Password == pw)
                 {
                     var context = HttpContext.Current;

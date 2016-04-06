@@ -238,4 +238,5 @@ _Pvt_Extensions
 # user defined
 FineMIS/extjs
 FineMIS/extjs_builder
-FineMIS/res
+FineMIS/res/icon
+FineMIS/res/images
