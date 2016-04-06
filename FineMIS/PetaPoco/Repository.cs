@@ -8,6 +8,9 @@
 
 using System;
 using System.Data;
+using System.Data.Common;
+using StackExchange.Profiling;
+using StackExchange.Profiling.Data;
 
 namespace PetaPoco
 {
@@ -70,7 +73,7 @@ namespace PetaPoco
 
         public override IDbConnection OnConnectionOpened(IDbConnection conn)
         {
-            return base.OnConnectionOpened(conn);
+            return new ProfiledDbConnection((DbConnection)conn, MiniProfiler.Current);
         }
 
         public override void OnConnectionClosing(IDbConnection conn)

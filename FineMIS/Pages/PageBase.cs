@@ -10,6 +10,7 @@ using FineUI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using StackExchange.Profiling;
 
 namespace FineMIS.Pages
 {
@@ -36,6 +37,13 @@ namespace FineMIS.Pages
 
             // 设置页面标题
             Page.Title = Settings.Title;
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            // 显示MiniProfiler
+            Response.Write(MiniProfiler.RenderIncludes(RenderPosition.Right));
         }
 
         #endregion
@@ -82,7 +90,7 @@ namespace FineMIS.Pages
             }
             catch (Exception)
             {
-                // TODO
+                // ignored
             }
 
             return queryIntValue;
