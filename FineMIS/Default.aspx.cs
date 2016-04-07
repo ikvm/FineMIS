@@ -64,13 +64,13 @@ namespace FineMIS
             return jo;
         }
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            // 显示MiniProfiler
-            Response.Write(
-                StackExchange.Profiling.MiniProfiler.RenderIncludes(StackExchange.Profiling.RenderPosition.BottomRight));
-        }
+        //protected override void OnPreRender(EventArgs e)
+        //{
+        //    base.OnPreRender(e);
+        //    // 显示MiniProfiler
+        //    Response.Write(
+        //        StackExchange.Profiling.MiniProfiler.RenderIncludes(StackExchange.Profiling.RenderPosition.BottomRight));
+        //}
 
         #endregion
 

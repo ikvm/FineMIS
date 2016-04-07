@@ -42,14 +42,15 @@ namespace FineMIS
         /// </summary>
         public static void SignOut()
         {
+            // clear session
+            Current.Session?.Clear();
+
             var cookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
             if (cookie != null)
             {
                 cookie.Expires = DateTime.Now.AddYears(-3);
                 HttpContext.Current.Response.Cookies.Add(cookie);
             }
-
-            Current.Session?.Clear();
         }
 
         /// <summary>
@@ -61,6 +62,9 @@ namespace FineMIS
         /// <returns>True if the user is successfully authenticated and signed in; false otherwise.</returns>
         public static bool AuthenticateUser(string username, string password, bool rememberMe)
         {
+            // clear session
+            Current.Session?.Clear();
+
             var un = (username ?? string.Empty).Trim();
             var pw = (password ?? string.Empty).Trim();
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using FineMIS.Pages;
 using FineUI;
@@ -8,13 +9,14 @@ using PetaPoco;
 
 namespace FineMIS.Modules.SYS.Menu
 {
+    [Description("Menu")]
     public partial class Menu : SingleGridPage
     {
         protected override Grid MainGrid => MainPanel;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         /// <summary>

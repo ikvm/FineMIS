@@ -49,39 +49,6 @@ namespace FineMIS
 	
 	}
     
-	[TableName("dbo.SYS_MENU")]
-	[PrimaryKey("Id")]
-	[ExplicitColumns]
-    public partial class SYS_MENU : BaseModel<SYS_MENU, long>
-    {
-		[Column] public override long Id { get; set; }
-	
-		[Column] public long? ParentId { get; set; }
-	
-		[Column] public string Name { get; set; }
-	
-		[Column] public string ImageUrl { get; set; }
-	
-		[Column] public string NavigateUrl { get; set; }
-	
-		[Column] public int? SortIndex { get; set; }
-	
-		[Column] public override string CreateBy { get; set; }
-	
-		[Column] public override DateTime CreateDate { get; set; }
-	
-		[Column] public override string LastUpdateBy { get; set; }
-	
-		[Column] public override DateTime LastUpdateDate { get; set; }
-	
-		[Column] public override bool Active { get; set; }
-	
-		[Column] public override long UserBelongTo { get; set; }
-	
-		[Column] public override long CmpyBelongTo { get; set; }
-	
-	}
-    
 	[TableName("dbo.SYS_ROLE")]
 	[PrimaryKey("Id")]
 	[ExplicitColumns]
@@ -210,6 +177,41 @@ namespace FineMIS
 		[Column] public long? RoleId { get; set; }
 	
 		[Column] public long? MenuId { get; set; }
+	
+		[Column] public override string CreateBy { get; set; }
+	
+		[Column] public override DateTime CreateDate { get; set; }
+	
+		[Column] public override string LastUpdateBy { get; set; }
+	
+		[Column] public override DateTime LastUpdateDate { get; set; }
+	
+		[Column] public override bool Active { get; set; }
+	
+		[Column] public override long UserBelongTo { get; set; }
+	
+		[Column] public override long CmpyBelongTo { get; set; }
+	
+	}
+    
+	[TableName("dbo.SYS_MENU")]
+	[PrimaryKey("Id")]
+	[ExplicitColumns]
+    public partial class SYS_MENU : BaseModel<SYS_MENU, long>
+    {
+		[Column] public override long Id { get; set; }
+	
+		[Column] public long? ParentId { get; set; }
+	
+		[Column] public string Name { get; set; }
+	
+		[Column] public string ViewName { get; set; }
+	
+		[Column] public string ImageUrl { get; set; }
+	
+		[Column] public string NavigateUrl { get; set; }
+	
+		[Column] public int? SortIndex { get; set; }
 	
 		[Column] public override string CreateBy { get; set; }
 	

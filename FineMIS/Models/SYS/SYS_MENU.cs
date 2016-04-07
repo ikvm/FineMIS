@@ -24,6 +24,7 @@ namespace FineMIS
                 Id = Id,
                 ParentId = ParentId,
                 Name = Name,
+                ViewName = ViewName,
                 ImageUrl = ImageUrl,
                 NavigateUrl = NavigateUrl,
                 SortIndex = SortIndex,
@@ -46,10 +47,8 @@ namespace FineMIS
         {
             get
             {
-                if ((List<SYS_MENU>)Current.Session["__MENUS__"] == null)
-                {
-                    Current.Session["__MENUS__"] = InitMenus();
-                }
+                if (!Current.IsAuthenticated) return new List<SYS_MENU>();
+                if ((List<SYS_MENU>)Current.Session["__MENUS__"] == null) Current.Session["__MENUS__"] = InitMenus();
                 return (List<SYS_MENU>)Current.Session["__MENUS__"];
             }
         }

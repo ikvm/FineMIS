@@ -9,6 +9,7 @@ using FineMIS.Controls;
 using FineUI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OutOfMemory;
 using PetaPoco;
 using StackExchange.Profiling;
 
@@ -23,9 +24,9 @@ namespace FineMIS.Pages
             base.OnInit(e);
 
             // 此用户是否有访问此页面的权限
-            if (!CheckPowerView())
+            if (!CheckView())
             {
-                CheckPowerFailWithPage();
+                //CheckPowerFailWithPage();
                 return;
             }
         }
@@ -35,6 +36,8 @@ namespace FineMIS.Pages
             base.OnPreRender(e);
             // 显示MiniProfiler
             Response.Write(MiniProfiler.RenderIncludes(RenderPosition.Right));
+
+            Response.Write(Request.QueryString);
         }
 
         #endregion
@@ -50,9 +53,6 @@ namespace FineMIS.Pages
         #endregion
 
         #region 只读静态变量
-
-        private static readonly string CHECK_POWER_FAIL_PAGE_MESSAGE = "您无权访问此页面！";
-        private static readonly string CHECK_POWER_FAIL_ACTION_MESSAGE = "您无权进行此操作！";
 
         public static readonly string FORCE_REFRESH = "FORCE_REFRESH";
         public static readonly string DEFAULT_ORDER_BY = "Id DESC";
@@ -93,134 +93,16 @@ namespace FineMIS.Pages
 
         /// <summary>
         /// 检查当前用户是否拥有当前页面的浏览权限
-        /// 页面需要先定义ViewPower属性，以确定页面与某个浏览权限的对应关系
         /// </summary>
         /// <returns></returns>
-        protected bool CheckPowerView()
+        protected bool CheckView()
         {
-            return true;
+            return SYS_MENU_Helper.Menus.Any(menu => menu.ViewName == GetType().GetDescription());
         }
 
-        /// <summary>
-        ///     检查当前用户是否拥有某个权限
-        /// </summary>
-        /// <returns></returns>
-        protected bool CheckPower(string powerName)
+        protected bool CheckControl(Control control)
         {
-            // 如果权限名为空，则放行
-            if (string.IsNullOrEmpty(powerName))
-            {
-                return true;
-            }
-
-            // 当前登陆用户的权限列表
-            var rolePowerNames = GetRolePowerNames();
-            if (rolePowerNames.Contains(powerName))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        ///     获取当前登录用户拥有的全部权限列表
-        /// </summary>
-        /// <returns></returns>
-        protected List<string> GetRolePowerNames()
-        {
-            //// 将用户拥有的权限列表保存在Session中，这样就避免每个请求多次查询数据库
-            //if (Session["UserPowerList"] == null)
-            //{
-            //    List<string> rolePowerNames = new List<string>();
-
-            //    // 超级管理员拥有所有权限
-            //    if (GetIdentityName() == "admin")
-            //    {
-            //        rolePowerNames = DB.Powers.Select(p => p.Name).ToList();
-            //    }
-            //    else
-            //    {
-            //        List<int> roleIDs = GetIdentityRoleIDs();
-
-            //        foreach (var role in DB.Roles.Include(r => r.Powers).Where(r => roleIDs.Contains(r.ID)))
-            //        {
-            //            foreach (var power in role.Powers)
-            //            {
-            //                if (!rolePowerNames.Contains(power.Name))
-            //                {
-            //                    rolePowerNames.Add(power.Name);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    Session["UserPowerList"] = rolePowerNames;
-            //}
-            //return (List<string>)Session["UserPowerList"];
-
-            return null;
-        }
-
-        #endregion
-
-        #region 权限相关
-
-        protected void CheckPowerFailWithPage()
-        {
-            Response.Write(CHECK_POWER_FAIL_PAGE_MESSAGE);
-            Response.End();
-        }
-
-        protected void CheckPowerFailWithButton(Button btn)
-        {
-            btn.Enabled = false;
-            btn.ToolTip = CHECK_POWER_FAIL_ACTION_MESSAGE;
-        }
-
-        protected void CheckPowerFailWithLinkButtonField(Grid grid, string columnId)
-        {
-            var btn = grid.FindColumn(columnId) as LinkButtonField;
-            if (btn == null) return;
-            btn.Enabled = false;
-            btn.ToolTip = CHECK_POWER_FAIL_ACTION_MESSAGE;
-        }
-
-        protected void CheckPowerFailWithWindowField(Grid grid, string columnId)
-        {
-            var btn = grid.FindColumn(columnId) as WindowField;
-            if (btn == null) return;
-            btn.Enabled = false;
-            btn.ToolTip = CHECK_POWER_FAIL_ACTION_MESSAGE;
-        }
-
-        protected void CheckPowerFailWithAlert()
-        {
-            PageContext.RegisterStartupScript(Alert.GetShowInTopReference(CHECK_POWER_FAIL_ACTION_MESSAGE));
-        }
-
-        protected void CheckPowerWithButton(string powerName, Button btn)
-        {
-            if (!CheckPower(powerName))
-            {
-                CheckPowerFailWithButton(btn);
-            }
-        }
-
-        protected void CheckPowerWithLinkButtonField(string powerName, Grid grid, string columnId)
-        {
-            if (!CheckPower(powerName))
-            {
-                CheckPowerFailWithLinkButtonField(grid, columnId);
-            }
-        }
-
-        protected void CheckPowerWithWindowField(string powerName, Grid grid, string columnId)
-        {
-            if (!CheckPower(powerName))
-            {
-                CheckPowerFailWithWindowField(grid, columnId);
-            }
+            return SYS_ACTION_Helper.Actions.Any(action => action.ControlId == control.ID);
         }
 
         /// <summary>

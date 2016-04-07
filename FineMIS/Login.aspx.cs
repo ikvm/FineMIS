@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Web.Security;
-using FineMIS.Pages;
 
 namespace FineMIS
 {
-    public partial class Login : PageBase
+    public partial class Login : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
