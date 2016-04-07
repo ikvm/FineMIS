@@ -10,10 +10,11 @@ namespace FineMIS.Modules.SYS.Menu
 {
     public partial class Menu : SingleGridPage
     {
-        protected override Grid MainGrid => Grid1;
+        protected override Grid MainGrid => MainPanel;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            
         }
 
         /// <summary>
@@ -28,13 +29,13 @@ namespace FineMIS.Modules.SYS.Menu
             {
                 menus = menus.Where(m => m.Name == search).ToList();
             }
-            if (!string.IsNullOrEmpty(Grid1.SortField))
+            if (!string.IsNullOrEmpty(MainPanel.SortField))
             {
                 //排序
             }
-            Grid1.RecordCount = menus.Count;
-            Grid1.DataSource = menus;
-            Grid1.DataBind();
+            MainPanel.RecordCount = menus.Count;
+            MainPanel.DataSource = menus;
+            MainPanel.DataBind();
         }
 
         /// <summary>

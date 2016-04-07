@@ -30,6 +30,8 @@ namespace FineMIS
 
         public long CmpyId { get; }
 
+        public List<SYS_MENU> Menus { get; }
+
         /// <summary>
         /// Creates a new intance using the specified username and isAuthenticated bit.
         /// </summary>

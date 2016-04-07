@@ -130,6 +130,24 @@ namespace FineMIS {
         protected global::FineUI.Toolbar Toolbar1;
         
         /// <summary>
+        /// StatusInfo 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::FineUI.ToolbarText StatusInfo;
+        
+        /// <summary>
+        /// ThreadInfo 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::FineUI.ToolbarText ThreadInfo;
+        
+        /// <summary>
         /// ToolbarFill1 控件。
         /// </summary>
         /// <remarks>

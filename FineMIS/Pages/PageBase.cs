@@ -28,15 +28,6 @@ namespace FineMIS.Pages
                 CheckPowerFailWithPage();
                 return;
             }
-
-            // 设置主题
-            if (PageManager.Instance != null)
-            {
-                PageManager.Instance.Theme = (Theme)Enum.Parse(typeof(Theme), Settings.Theme, true);
-            }
-
-            // 设置页面标题
-            Page.Title = Settings.Title;
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -98,79 +89,11 @@ namespace FineMIS.Pages
 
         #endregion
 
-        #region 当前登录用户信息
-
-        // http://blog.163.com/zjlovety@126/blog/static/224186242010070024282/
-        // http://www.cnblogs.com/gaoshuai/articles/1863231.html
-        /// <summary>
-        ///     当前登录用户的角色列表
-        /// </summary>
-        /// <returns></returns>
-        protected List<int> GetIdentityRoleIDs()
-        {
-            var roleIDs = new List<int>();
-
-            if (!User.Identity.IsAuthenticated) return roleIDs;
-            var ticket = ((FormsIdentity)User.Identity).Ticket;
-            var userData = ticket.UserData;
-
-            roleIDs.AddRange(from roleId in userData.Split(',')
-                             where !string.IsNullOrEmpty(roleId)
-                             select Convert.ToInt32(roleId));
-
-            return roleIDs;
-        }
-
-        /// <summary>
-        ///     当前登录用户名
-        /// </summary>
-        /// <returns></returns>
-        protected string GetIdentityName()
-        {
-            return User.Identity.IsAuthenticated ? User.Identity.Name : string.Empty;
-        }
-
-        /// <summary>
-        ///     创建表单验证的票证并存储在客户端Cookie中
-        /// </summary>
-        /// <param name="userName">当前登录用户名</param>
-        /// <param name="roleIDs">当前登录用户的角色ID列表</param>
-        /// <param name="isPersistent">是否跨浏览器会话保存票证</param>
-        /// <param name="expiration">过期时间</param>
-        protected void CreateFormsAuthenticationTicket(string userName, string roleIDs, bool isPersistent,
-            DateTime expiration)
-        {
-            // 创建Forms身份验证票据
-            var ticket = new FormsAuthenticationTicket(1,
-                userName, // 与票证关联的用户名
-                DateTime.Now, // 票证发出时间
-                expiration, // 票证过期时间
-                isPersistent, // 如果票证将存储在持久性 Cookie 中（跨浏览器会话保存），则为 true；否则为 false。
-                roleIDs // 存储在票证中的用户特定的数据
-                );
-
-            // 对Forms身份验证票据进行加密，然后保存到客户端Cookie中
-            var hashTicket = FormsAuthentication.Encrypt(ticket);
-            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hashTicket)
-            {
-                HttpOnly = true,
-
-                // 1. 关闭浏览器即删除（Session Cookie）：DateTime.MinValue
-                // 2. 指定时间后删除：大于 DateTime.Now 的某个值
-                // 3. 删除Cookie：小于 DateTime.Now 的某个值
-                Expires = isPersistent ? expiration : DateTime.MinValue
-            };
-
-            Response.Cookies.Add(cookie);
-        }
-
-        #endregion
-
         #region 权限检查
 
         /// <summary>
-        ///     检查当前用户是否拥有当前页面的浏览权限
-        ///     页面需要先定义ViewPower属性，以确定页面与某个浏览权限的对应关系
+        /// 检查当前用户是否拥有当前页面的浏览权限
+        /// 页面需要先定义ViewPower属性，以确定页面与某个浏览权限的对应关系
         /// </summary>
         /// <returns></returns>
         protected bool CheckPowerView()

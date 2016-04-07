@@ -98,7 +98,8 @@
                     <Toolbars>
                         <f:Toolbar ID="Toolbar1" Position="Bottom" CssClass="bottombar" runat="server">
                             <Items>
-                                <f:ToolbarText runat="server" Text="就绪"></f:ToolbarText>
+                                <f:ToolbarText runat="server" ID="StatusInfo" Text="就绪"></f:ToolbarText>
+                                <f:ToolbarText runat="server" ID="ThreadInfo" Text=""></f:ToolbarText>
                                 <f:ToolbarFill ID="ToolbarFill1" runat="server" />
                                 <f:ToolbarText runat="server" Text="Copyright &copy; 2011 - 2015 <a href='http://www.eheng.net.cn' target='_blank'>湖北鄂恒科技有限公司</a>"></f:ToolbarText>
                             </Items>

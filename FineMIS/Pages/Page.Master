@@ -56,9 +56,8 @@
             <asp:ContentPlaceHolder ID="Main" runat="server">
             </asp:ContentPlaceHolder>
         </f:CPHConnector>
-        <f:Window ID="Window1" Title="编辑" Hidden="true" EnableIFrame="true" runat="server"
-            CloseAction="HidePostBack" EnableMaximize="true" EnableResize="true"
-            OnClose="Window1_Close" IsModal="True">
+        <f:Window ID="MainWindow" Title="编辑" Hidden="true" EnableIFrame="true" runat="server"
+            CloseAction="HidePostBack" EnableMaximize="true" EnableResize="true" IsModal="True" Target="Self">
         </f:Window>
     </form>
 

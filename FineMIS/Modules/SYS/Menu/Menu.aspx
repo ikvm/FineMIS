@@ -3,11 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Main" runat="server">
-    <f:Grid ID="Grid1" runat="server" BoxFlex="1" ShowBorder="true" ShowHeader="false"
-        EnableCheckBoxSelect="true"
-        DataKeyNames="Id,UserName" AllowSorting="true" OnSort="grid_Sort" SortField="Name"
-        SortDirection="DESC" AllowPaging="true" IsDatabasePaging="true"
-        OnRowCommand="grid_RowCommand" OnPageIndexChange="grid_PageIndexChange">
+    <f:Grid ID="MainPanel" runat="server" BoxFlex="1" ShowBorder="false" ShowHeader="false" EnableCheckBoxSelect="true">
         <Toolbars>
             <f:Toolbar runat="server">
                 <Items>
@@ -17,9 +13,9 @@
                     </f:Button>
                     <f:Button ID="btnDelete" Icon="Delete" runat="server" Text="删除" OnClick="btnDelete_Click">
                     </f:Button>
-                    <f:TwinTriggerBox ID="ttbFullTextSearch" runat="server" EmptyText="请输入菜单名称" Trigger1Icon="Clear" Trigger2Icon="Search" Width="300">
+                    <f:TwinTriggerBox ID="ttbFullTextSearch" runat="server" EmptyText="请输入关键字"
+                        Trigger1Icon="Clear" Trigger2Icon="Search" Width="300">
                     </f:TwinTriggerBox>
-                    <%--其它按钮--%>
                 </Items>
             </f:Toolbar>
         </Toolbars>
@@ -36,10 +32,8 @@
             </f:ToolbarSeparator>
             <f:ToolbarText ID="ToolbarText1" runat="server" Text="每页记录数：">
             </f:ToolbarText>
-            <f:DropDownList ID="ddlGridPageSize" Width="80px" AutoPostBack="true" OnSelectedIndexChanged="ddlGridPageSize_SelectedIndexChanged"
-                runat="server">
-                <f:ListItem Text="10" Value="10" />
-                <f:ListItem Text="20" Value="20" />
+            <f:DropDownList ID="ddlGridPageSize" Width="80px" AutoPostBack="true" OnSelectedIndexChanged="ddlGridPageSize_SelectedIndexChanged" runat="server">
+                <f:ListItem Text="25" Value="25" />
                 <f:ListItem Text="50" Value="50" />
                 <f:ListItem Text="100" Value="100" />
             </f:DropDownList>

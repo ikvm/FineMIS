@@ -42,7 +42,6 @@ namespace FineMIS
         /// </summary>
         public static void SignOut()
         {
-            // using a custom cookie name based on the current blog instance.
             var cookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
             if (cookie != null)
             {
@@ -50,8 +49,7 @@ namespace FineMIS
                 HttpContext.Current.Response.Cookies.Add(cookie);
             }
 
-            // reload the menus
-            SYS_MENU_Helper.Reload();
+            Current.Session?.Clear();
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using FineMIS.Controls;
 using OutOfMemory;
 using PetaPoco;
@@ -39,45 +40,30 @@ namespace FineMIS
     }
 
     /// <summary>
-    /// thread safe instance of menus
+    /// use session to store menus
     /// </summary>
     public class SYS_MENU_Helper
     {
-        private SYS_MENU_Helper()
-        {
-        }
-
-        [ThreadStatic]
-        private static List<SYS_MENU> _menus;
-        private static readonly object Lock = new object();
-
         public static List<SYS_MENU> Menus
         {
             get
             {
-                lock (Lock)
+                if ((List<SYS_MENU>)Current.Session["__MENUS__"] == null)
                 {
-                    if (_menus == null)
-                    {
-                        InitMenus();
-                    }
-
-                    return _menus;
+                    Current.Session["__MENUS__"] = InitMenus();
                 }
+                return (List<SYS_MENU>)Current.Session["__MENUS__"];
             }
         }
 
         public static void Reload()
         {
-            lock (Lock)
-            {
-                _menus = null;
-            }
+            Current.Session["__MENUS__"] = null;
         }
 
-        private static void InitMenus()
+        private static List<SYS_MENU> InitMenus()
         {
-            _menus = new List<SYS_MENU>();
+            var menus = new List<SYS_MENU>();
 
             var dbMenus = SYS_MENU.Fetch(
                 Sql.Builder
@@ -91,15 +77,14 @@ namespace FineMIS
                     .Where("RoleId IN (@ids)", new { ids = Current.RoleIds.ToArray() })
                     .Where("SYS_MENU.Active = @0", true)
                     .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
-                );
+                ).Distinct(new SYS_MENU_Comparer()).ToList();
 
-            dbMenus = dbMenus.Distinct(new SYS_MENU_Comparer()).ToList();
+            ResolveMenuCollection(dbMenus, 0, 0, ref menus);
 
-            ResolveMenuCollection(dbMenus, 0, 0);
+            return menus;
         }
-
-
-        private static int ResolveMenuCollection(List<SYS_MENU> dbMenus, long parentId, int level)
+       
+        private static int ResolveMenuCollection(List<SYS_MENU> dbMenus, long parentId, int level, ref List<SYS_MENU> menus)
         {
             var count = 0;
 
@@ -107,13 +92,13 @@ namespace FineMIS
             {
                 count++;
 
-                _menus.Add(menu);
+                menus.Add(menu);
                 menu.TreeLevel = level;
                 menu.IsTreeLeaf = true;
                 menu.Enabled = true;
 
                 level++;
-                var childCount = ResolveMenuCollection(dbMenus, menu.Id, level);
+                var childCount = ResolveMenuCollection(dbMenus, menu.Id, level, ref menus);
                 if (childCount != 0)
                 {
                     menu.IsTreeLeaf = false;
