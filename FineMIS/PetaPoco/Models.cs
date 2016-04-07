@@ -200,6 +200,33 @@ namespace FineMIS
 	
 	}
     
+	[TableName("dbo.SYS_ROLE_MENU")]
+	[PrimaryKey("Id")]
+	[ExplicitColumns]
+    public partial class SYS_ROLE_MENU : BaseModel<SYS_ROLE_MENU, long>
+    {
+		[Column] public override long Id { get; set; }
+	
+		[Column] public long? RoleId { get; set; }
+	
+		[Column] public long? MenuId { get; set; }
+	
+		[Column] public override string CreateBy { get; set; }
+	
+		[Column] public override DateTime CreateDate { get; set; }
+	
+		[Column] public override string LastUpdateBy { get; set; }
+	
+		[Column] public override DateTime LastUpdateDate { get; set; }
+	
+		[Column] public override bool Active { get; set; }
+	
+		[Column] public override long UserBelongTo { get; set; }
+	
+		[Column] public override long CmpyBelongTo { get; set; }
+	
+	}
+    
 	[TableName("dbo.SYS_ACTION")]
 	[PrimaryKey("Id")]
 	[ExplicitColumns]

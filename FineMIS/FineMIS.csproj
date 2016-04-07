@@ -245,6 +245,7 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\SYS\SYS_ACTION.cs" />
     <Compile Include="Models\SYS\SYS_MENU.cs" />
     <Compile Include="Modules\SYS\Menu\Menu.aspx.cs">
       <DependentUpon>Menu.aspx</DependentUpon>

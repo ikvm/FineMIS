@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using FineMIS.Controls;
-using OutOfMemory;
 using PetaPoco;
 
 namespace FineMIS
@@ -67,23 +65,19 @@ namespace FineMIS
 
             var dbMenus = SYS_MENU.Fetch(
                 Sql.Builder
-                    .LeftJoin("SYS_ROLE_MENU_ACTION")
-                    .On("SYS_MENU.Id = SYS_ROLE_MENU_ACTION.MenuId")
-                    // at least have one action is ok to view
-                    // or specify the 'view' action
-                    //.LeftJoin("SYS_ACTION")
-                    //.On("SYS_ACTION.Id = SYS_ROLE_MENU_ACTION.ActionId")
-                    //.Where("SYS_ACTION.Name = @0", "View")
+                    .LeftJoin("SYS_ROLE_MENU")
+                    .On("SYS_MENU.Id = SYS_ROLE_MENU.MenuId")
                     .Where("RoleId IN (@ids)", new { ids = Current.RoleIds.ToArray() })
                     .Where("SYS_MENU.Active = @0", true)
-                    .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
+                    .Where("SYS_ROLE_MENU.Active = @0", true)
+                    .OrderBy("SortIndex ASC")
                 ).Distinct(new SYS_MENU_Comparer()).ToList();
 
             ResolveMenuCollection(dbMenus, 0, 0, ref menus);
 
             return menus;
         }
-       
+
         private static int ResolveMenuCollection(List<SYS_MENU> dbMenus, long parentId, int level, ref List<SYS_MENU> menus)
         {
             var count = 0;
