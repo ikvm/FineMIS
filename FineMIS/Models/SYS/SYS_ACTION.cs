@@ -39,27 +39,11 @@ namespace FineMIS
                     .LeftJoin("SYS_ROLE_MENU_ACTION")
                     .On("SYS_ACION.Id = SYS_ROLE_MENU_ACION.ActionId")
                     .Where("RoleId IN (@ids)", new { ids = Current.RoleIds.ToArray() })
-                    .Where("SYS_MENU.Active = @0", true)
+                    .Where("SYS_ACION.Active = @0", true)
                     .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
-                ).Distinct(new SYS_ACTION_Comparer()).ToList();
+                );
 
             return actions;
-        }
-    }
-
-    /// <summary>
-    /// comparer of actions
-    /// </summary>
-    public class SYS_ACTION_Comparer : IEqualityComparer<SYS_ACTION>
-    {
-        public bool Equals(SYS_ACTION x, SYS_ACTION y)
-        {
-            return x != null && y != null && x.Id == y.Id && x.MenuId == y.MenuId;
-        }
-
-        public int GetHashCode(SYS_ACTION obj)
-        {
-            return obj.Id.GetHashCode() ^ obj.MenuId.GetHashCode();
         }
     }
 }

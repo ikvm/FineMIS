@@ -12,7 +12,16 @@ namespace FineMIS.Modules.SYS.Menu
     [Description("Menu")]
     public partial class Menu : SingleGridPage
     {
+        /// <summary>
+        /// if the grid is the only control in page
+        /// then the grid ID must be MainPanel
+        /// </summary>
         protected override Grid MainGrid => MainPanel;
+
+        protected void Page_Init(object sender, EventArgs e)
+        {
+
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,11 +29,11 @@ namespace FineMIS.Modules.SYS.Menu
         }
 
         /// <summary>
-        ///     获取数据
+        /// 获取数据
         /// </summary>
         protected override void LoadData()
         {
-            var menus = SYS_MENU_Helper.Menus; //未缓存的数据查询时需要拼接SQL
+            var menus = SYS_MENU.Fetch(Sql.Builder.Where("Active = @0", true));
             //拼接查询的SQL
             var search = ttbFullTextSearch.Text;
             if (!string.IsNullOrEmpty(search))
@@ -38,15 +47,6 @@ namespace FineMIS.Modules.SYS.Menu
             MainPanel.RecordCount = menus.Count;
             MainPanel.DataSource = menus;
             MainPanel.DataBind();
-        }
-
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        protected override void DeleteData()
-        {
-            IEnumerable<object> selectIds = GetSelectedIds(MainGrid);
-            SYS_MENU.Delete(Sql.Builder.Where("Id IN(@0)", selectIds), true);
         }
 
         /// <summary>

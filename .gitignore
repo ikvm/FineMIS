@@ -236,7 +236,7 @@ _Pvt_Extensions
 .fake/
 
 # user defined
+extjs_source_all
 FineMIS/extjs
-FineMIS/extjs_builder
 FineMIS/res/icon
 FineMIS/res/images

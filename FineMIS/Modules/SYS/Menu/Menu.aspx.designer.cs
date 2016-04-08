@@ -49,6 +49,42 @@ namespace FineMIS.Modules.SYS.Menu {
         protected global::FineUI.Button btnDelete;
         
         /// <summary>
+        /// btnAudit 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::FineUI.Button btnAudit;
+        
+        /// <summary>
+        /// btnUnaudit 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::FineUI.Button btnUnaudit;
+        
+        /// <summary>
+        /// btnExport 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::FineUI.Button btnExport;
+        
+        /// <summary>
+        /// btnPrint 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::FineUI.Button btnPrint;
+        
+        /// <summary>
         /// ttbFullTextSearch 控件。
         /// </summary>
         /// <remarks>
@@ -56,32 +92,5 @@ namespace FineMIS.Modules.SYS.Menu {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::FineUI.TwinTriggerBox ttbFullTextSearch;
-        
-        /// <summary>
-        /// ToolbarSeparator1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::FineUI.ToolbarSeparator ToolbarSeparator1;
-        
-        /// <summary>
-        /// ToolbarText1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::FineUI.ToolbarText ToolbarText1;
-        
-        /// <summary>
-        /// ddlGridPageSize 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::FineUI.DropDownList ddlGridPageSize;
     }
 }

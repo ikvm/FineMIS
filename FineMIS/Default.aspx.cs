@@ -18,16 +18,6 @@ namespace FineMIS
         {
             // 用户可见的菜单列表
             var menus = SYS_MENU_Helper.Menus;
-            //if (menus.Count == 0)
-            //{
-            //    // 清除cookie
-            //    Security.SignOut();
-
-            //    // 返回未授权页面
-            //    Response.Redirect("~/Error/401.html");
-
-            //    return;
-            //}
 
             // 注册客户端脚本，服务器端控件ID和客户端ID的映射关系
             var ids = GetClientIds(regionPanel, regionTop, mainTabStrip, txtUser, btnRefresh);
@@ -78,7 +68,7 @@ namespace FineMIS
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ThreadInfo.Text = $"RoleIds: {Current.RoleIdsString}, Thread Id: {Thread.CurrentThread.ManagedThreadId}, Session Id: {Session.SessionID}";
+            ThreadInfo.Text = $"Thread Id: {Thread.CurrentThread.ManagedThreadId}, Session Id: {Session.SessionID}";
         }
 
         #endregion

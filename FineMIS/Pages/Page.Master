@@ -33,7 +33,7 @@
 
         .x-grid-row-summary .x-grid-cell-inner {
             font-weight: bold;
-            color: red;
+            color: #C0392B;
         }
 
         .x-grid-row .x-grid-td {
@@ -57,7 +57,7 @@
             </asp:ContentPlaceHolder>
         </f:CPHConnector>
         <f:Window ID="MainWindow" Title="编辑" Hidden="true" EnableIFrame="true" runat="server"
-            CloseAction="HidePostBack" EnableMaximize="true" EnableResize="true" IsModal="True" Target="Self">
+            CloseAction="HidePostBack" EnableMaximize="true" EnableResize="true" IsModal="True" Target="Parent">
         </f:Window>
     </form>
 

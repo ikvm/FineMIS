@@ -53,7 +53,7 @@ namespace FineMIS
 
         [CssClass("fred")]
         [Description("已拒绝")]
-        REFUSE = 2,
+        REFUSE = -1,
 
         [CssClass("fgray")]
         [Description("未审核")]
@@ -168,7 +168,7 @@ namespace FineMIS
         /// 原材料过磅
         /// </summary>
         CLGB,
-         /// <summary>
+        /// <summary>
         /// 应付结算
         /// </summary>
         YFJS,
@@ -963,7 +963,7 @@ namespace FineMIS
         ///  零星工地
         /// </summary>
         [Description("零星工地")]
-        Fragmentary = 2,  
+        Fragmentary = 2,
     }
 
     //工地运距范围
@@ -998,7 +998,7 @@ namespace FineMIS
         ///  50以上
         /// </summary>
         [Description("50以上")]
-        Over50 = 5,  
+        Over50 = 5,
     }
 
     /// <summary>

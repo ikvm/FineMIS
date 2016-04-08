@@ -26,8 +26,7 @@ namespace FineMIS.Pages
             // 此用户是否有访问此页面的权限
             if (!CheckView())
             {
-                //CheckPowerFailWithPage();
-                return;
+                Response.Redirect("~/Error/401.html");
             }
         }
 
@@ -384,7 +383,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        ///     获取当前选中行（一行）的Id
+        /// 获取当前选中行（一行）的Id
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
@@ -394,7 +393,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        ///     获取当前选中行（一行）的指定datakey
+        /// 获取当前选中行（一行）的指定datakey
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="dataIndex"></param>
@@ -405,7 +404,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        ///     获取当前选中行（一行）的指定datakey
+        /// 获取当前选中行（一行）的指定datakey
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="name"></param>
@@ -416,7 +415,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        ///     获取当前选中行的Id列表
+        /// 获取当前选中行的Id列表
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
@@ -426,7 +425,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        ///     获取当前选中行的指定datakey列表
+        /// 获取当前选中行的指定datakey列表
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="dataIndex"></param>
@@ -437,7 +436,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        ///     获取当前选中行的指定datakey列表
+        /// 获取当前选中行的指定datakey列表
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="name"></param>
@@ -448,7 +447,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        ///     根据类型获得指定格式的DataKeyNames
+        /// 根据类型获得指定格式的DataKeyNames
         /// </summary>
         /// <returns></returns>
         protected IEnumerable<string> GetDataKeyNames<T>()
@@ -459,7 +458,7 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        ///     根据类型设置指定Grid的DataKeyNames
+        /// 根据类型设置指定Grid的DataKeyNames
         /// </summary>
         /// <param name="grid"></param>
         protected void SetDataKeyNames<T>(Grid grid)
@@ -467,15 +466,17 @@ namespace FineMIS.Pages
             grid.DataKeyNames = GetDataKeyNames<T>().ToArray();
         }
 
-        ///// <summary>
-        ///// 选中行是否被审核
-        ///// </summary>
-        ///// <param name="grid"></param>
-        ///// <returns></returns>
-        //protected bool IsSelectedDataVerified(Grid grid)
-        //{
-        //    return grid.SelectedRowIndexArray.Any(rowIndex => Convert.ToInt32(Verified.Permit) == Convert.ToInt32(GetDataKey(grid, rowIndex, "Verified")));
-        //}
+        /// <summary>
+        /// 选中行是否被审核
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        protected bool IsSelectedDataVerified(Grid grid)
+        {
+            return
+                grid.SelectedRowIndexArray.Any(
+                    rowIndex => VERIFIED.PERMIT.ToInt32() == GetDataKey(grid, rowIndex, "Verified").ToInt32());
+        }
 
         ///// <summary>
         ///// 行是否被审核
@@ -483,6 +484,59 @@ namespace FineMIS.Pages
         ///// <param name="grid"></param>
         ///// <param name="rowIndex"></param>
         /// <returns></returns>
+        protected bool IsSpecifiedDataVerified(Grid grid, int rowIndex)
+        {
+            return VERIFIED.PERMIT.ToInt32() == GetDataKey(grid, rowIndex, "Verified").ToInt32();
+        }
+
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="gird"></param>
+        protected void DeleteData<T>(Grid gird) where T : BaseModel<T, long>
+        {
+            BaseModel<T, long>.Delete(Sql.Builder
+                .Where("Id IN (@ids)", new { ids = GetSelectedIds(gird) }));
+        }
+
+        /// <summary>
+        /// 审核数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="grid"></param>
+        protected void PermitData<T>(Grid grid) where T : BaseModel<T, long>
+        {
+            BaseModel<T, long>.Update(Sql.Builder.Set("Verified = @0", VERIFIED.PERMIT)
+                .Where("Id IN (@ids)", new { ids = GetSelectedIds(grid) }));
+        }
+
+        /// <summary>
+        /// 拒绝数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="grid"></param>
+        protected void RefuseData<T>(Grid grid) where T : BaseModel<T, long>
+        {
+            BaseModel<T, long>.Update(Sql.Builder.Set("Verified = @0", VERIFIED.REFUSE)
+                .Where("Id IN (@ids)", new { ids = GetSelectedIds(grid) }));
+        }
+
+        /// <summary>
+        /// 反审数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="grid"></param>
+        protected void UnauditData<T>(Grid grid) where T : BaseModel<T, long>
+        {
+            BaseModel<T, long>.Update(Sql.Builder.Set("Verified = @0", VERIFIED.UNAUDIT)
+                .Where("Id IN (@ids)", new { ids = GetSelectedIds(grid) }));
+        }
+
+        #endregion
+
+        #region 表单相关
+
         /// <summary>
         ///     清空所有表单字段内容
         /// </summary>

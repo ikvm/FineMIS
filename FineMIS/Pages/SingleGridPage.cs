@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using FineUI;
 using OutOfMemory;
+using PetaPoco;
 
 namespace FineMIS.Pages
 {
@@ -17,12 +18,13 @@ namespace FineMIS.Pages
 
         #endregion
 
-        #region 页面初始化
+        #region 重载
 
         protected override void OnInit(EventArgs e)
         {
             InitGrid();
             base.OnInit(e);
+            InitControls();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -33,10 +35,15 @@ namespace FineMIS.Pages
             {
                 BindGrid();
             }
-
-            InitControls();
         }
 
+        /// <summary>
+        /// 初始化表格
+        /// </summary>
+        private void InitGrid()
+        {
+            MainGrid.PageSize = 20;
+        }
 
         /// <summary>
         /// 初始化控件
@@ -45,7 +52,7 @@ namespace FineMIS.Pages
         {
             if (MainGrid.Toolbars.Count > 0 && MainGrid.Toolbars.First() != null)
             {
-                Button btnPostBack = new Button
+                var btnPostBack = new Button
                 {
                     ID = "btnPostBack",
                     Visible = false
@@ -55,18 +62,10 @@ namespace FineMIS.Pages
             }
         }
 
-        /// <summary>
-        ///     设置表格属性
-        /// </summary>
-        private void InitGrid()
-        {
-            MainGrid.PageSize = 20;
-        }
-
 
         #endregion
 
-        #region 页面事件
+        #region 事件
 
         #region 1.搜索栏相关
 
@@ -234,11 +233,10 @@ namespace FineMIS.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnPostBack_Click(object sender, EventArgs e)
+        protected virtual void btnPostBack_Click(object sender, EventArgs e)
         {
             // 获得回发参数
-            var argument = Request.Params["__EVENTARGUMENT"];
-            ProcessArgument(argument);
+            ProcessArgument(Request.Params["__EVENTARGUMENT"]);
         }
 
         /// <summary>
@@ -333,16 +331,6 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
-        ///     导入按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void btnImport_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         ///     导出按钮
         /// </summary>
         /// <param name="sender"></param>
@@ -424,20 +412,15 @@ namespace FineMIS.Pages
 
         #endregion
 
-        #region 需要每个页面实现的方法
+        #region 继承
 
         /// <summary>
-        ///     获得弹出窗体地址
+        /// 获得弹出窗体地址
         /// </summary>
         /// <param name="action">操作枚举类型</param>
         /// <param name="rowIndex"></param>
         /// <returns></returns>
         protected virtual string GetWindowUrl(ACTION action, int rowIndex = 0)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected virtual void LoadData()
         {
             throw new NotImplementedException();
         }
@@ -448,19 +431,19 @@ namespace FineMIS.Pages
             {
                 return;
             }
-            // 修改成功
+            // 修改操作
             else if (argument.Contains(ACTION.UPDATE.ToString()))
             {
                 Notify.Show("保存成功!", null, NotifyIcon.Success);
                 BindGrid();
             }
-            // 新增成功
+            // 新增操作
             else if (argument.Contains(ACTION.INSERT.ToString()))
             {
                 Notify.Show("保存成功!", null, NotifyIcon.Success);
                 BindGrid();
             }
-            // 添加成功
+            // 添加操作
             else if (argument.Contains(ACTION.APPEND.ToString()))
             {
                 Notify.Show("保存成功!", null, NotifyIcon.Success);
@@ -471,19 +454,59 @@ namespace FineMIS.Pages
             else if (argument.Contains(ACTION.DELETE.ToString()))
             {
                 DeleteData();
+
+                // 删除最后一页数据时，如果全部删除，要把PageIndex减1，否则显示不出来数据
+                if (MainGrid.PageIndex + 1 == MainGrid.PageCount
+                    && MainGrid.Rows.Count == MainGrid.SelectedRowIndexArray.Length
+                    && MainGrid.PageIndex > 0)
+                {
+                    MainGrid.PageIndex = MainGrid.PageIndex - 1;
+                }
+
                 Notify.Show("删除成功!", null, NotifyIcon.Success);
-                // 强制刷新
                 BindGrid();
             }
-            // 表格通过保存并继续添加按钮被编辑过后应启动一个刷新效果
-            else if (argument.Contains(FORCE_REFRESH))
+            // 移除操作
+            else if (argument.Contains(ACTION.DELETE.ToString()))
             {
-                // 强制刷新
+                RemoveData();
+
+                // 移除最后一页数据时，如果全部移除，要把PageIndex减1，否则显示不出来数据
+                if (MainGrid.PageIndex + 1 == MainGrid.PageCount
+                    && MainGrid.Rows.Count == MainGrid.SelectedRowIndexArray.Length
+                    && MainGrid.PageIndex > 0)
+                {
+                    MainGrid.PageIndex = MainGrid.PageIndex - 1;
+                }
+
+                Notify.Show("移除成功!", null, NotifyIcon.Success);
                 BindGrid();
             }
-            else if (Session[FORCE_REFRESH].ToBoolean())
+            else if (argument.Contains(ACTION.PERMIT.ToString()))
             {
-                // 强制刷新
+                PermitData();
+
+                Notify.Show("审核成功!", null, NotifyIcon.Success);
+                BindGrid();
+            }
+            else if (argument.Contains(ACTION.REFUSE.ToString()))
+            {
+                RefuseData();
+
+                Notify.Show("拒绝成功!", null, NotifyIcon.Success);
+                BindGrid();
+            }
+            else if (argument.Contains(ACTION.UNAUDIT.ToString()))
+            {
+                UnauditData();
+
+                Notify.Show("反审成功!", null, NotifyIcon.Success);
+                BindGrid();
+            }
+
+            // 强制刷新
+            if (argument.Contains(FORCE_REFRESH) || Session[FORCE_REFRESH].ToBoolean())
+            {
                 BindGrid();
             }
         }
@@ -519,11 +542,51 @@ namespace FineMIS.Pages
         }
 
         /// <summary>
+        /// 加载数据
+        /// </summary>
+        protected virtual void LoadData()
+        {
+
+        }
+
+        /// <summary>
         /// 删除数据
         /// </summary>
         protected virtual void DeleteData()
         {
-            throw new NotImplementedException();
+
+        }
+
+        /// <summary>
+        /// 移除数据
+        /// </summary>
+        protected virtual void RemoveData()
+        {
+
+        }
+
+        /// <summary>
+        /// 审核数据
+        /// </summary>
+        protected virtual void PermitData()
+        {
+
+        }
+
+        /// <summary>
+        /// 拒绝数据
+        /// </summary>
+        protected virtual void RefuseData()
+        {
+
+        }
+
+        /// <summary>
+        /// 反审数据
+        /// </summary>
+        protected virtual void UnauditData()
+        {
+
         }
 
         #endregion
