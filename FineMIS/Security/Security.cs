@@ -8,7 +8,7 @@ using PetaPoco;
 
 namespace FineMIS
 {
-    public sealed class Security
+    public static class Security
     {
         /// <summary>
         /// Handles the AuthenticateRequest event of the context control.

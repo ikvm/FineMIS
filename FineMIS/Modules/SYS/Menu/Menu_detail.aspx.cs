@@ -34,7 +34,7 @@ namespace FineMIS.Modules.SYS.Menu
         /// </summary>
         private void BindParentId()
         {
-            var mys = ResolveDdl(SYS_MENU_Helper.Menus, (int)Id);
+            var mys = ResolveDdl(MenuHelper.Menus, (int)Id);
             // 绑定到下拉列表（启用模拟树功能和不可选择项功能）
             ParentId.EnableSimulateTree = true;
             ParentId.DataTextField = "Name";
@@ -104,7 +104,7 @@ namespace FineMIS.Modules.SYS.Menu
                         SortIndex = SortIndex.Text.ToInt32()
                     };
                     menu.Insert();
-                    SYS_MENU_Helper.Reload();
+                    MenuHelper.Reload();
                     break;
                 case ACTION.UPDATE:
                     menu = SYS_MENU.SingleOrDefault(Sql.Builder.Where("Id=@0", Id));
@@ -116,7 +116,7 @@ namespace FineMIS.Modules.SYS.Menu
                         menu.ParentId = ParentId.Text.ToInt64();
                         menu.SortIndex = SortIndex.Text.ToInt32();
                         menu.Update();
-                        SYS_MENU_Helper.Reload();
+                        MenuHelper.Reload();
                     }
                     break;
                 case ACTION.DETAIL:

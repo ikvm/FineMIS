@@ -96,12 +96,12 @@ namespace FineMIS.Pages
         /// <returns></returns>
         protected bool CheckView()
         {
-            return SYS_MENU_Helper.Menus.Any(menu => menu.ViewName == GetType().GetDescription());
+            return MenuHelper.Menus.Any(menu => menu.ViewName == GetType().GetDescription());
         }
 
         protected bool CheckControl(Control control)
         {
-            return SYS_ACTION_Helper.Actions.Any(action => action.ControlId == control.ID);
+            return ActionHelper.Actions.Any(action => action.ControlId == control.ID);
         }
 
         /// <summary>

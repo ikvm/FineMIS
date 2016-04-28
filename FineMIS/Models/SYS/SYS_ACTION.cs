@@ -13,7 +13,7 @@ namespace FineMIS
     /// <summary>
     /// use session to store menus
     /// </summary>
-    public class SYS_ACTION_Helper
+    public static class ActionHelper
     {
         public static List<SYS_ACTION> Actions
         {
@@ -38,12 +38,28 @@ namespace FineMIS
                 Sql.Builder
                     .LeftJoin("SYS_ROLE_MENU_ACTION")
                     .On("SYS_ACION.Id = SYS_ROLE_MENU_ACION.ActionId")
-                    .Where("RoleId IN (@ids)", new { ids = Current.RoleIds.ToArray() })
+                    .Where("RoleId IN (@0)", Current.RoleIds.ToArray())
                     .Where("SYS_ACION.Active = @0", true)
                     .Where("SYS_ROLE_MENU_ACTION.Active = @0", true)
-                );
+                ).Distinct(new ActionComparer()).ToList();
 
             return actions;
+        }
+    }
+
+    /// <summary>
+    /// comparer of menus
+    /// </summary>
+    public class ActionComparer : IEqualityComparer<SYS_ACTION>
+    {
+        public bool Equals(SYS_ACTION x, SYS_ACTION y)
+        {
+            return x != null && y != null && x.Id == y.Id;
+        }
+
+        public int GetHashCode(SYS_ACTION obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

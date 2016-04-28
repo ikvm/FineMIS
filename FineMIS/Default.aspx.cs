@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Security;
 using FineUI;
 using Newtonsoft.Json;
@@ -17,7 +16,7 @@ namespace FineMIS
         protected void Page_Init(object sender, EventArgs e)
         {
             // 用户可见的菜单列表
-            var menus = SYS_MENU_Helper.Menus;
+            var menus = MenuHelper.Menus;
 
             // 注册客户端脚本，服务器端控件ID和客户端ID的映射关系
             var ids = GetClientIds(regionPanel, regionTop, mainTabStrip, txtUser, btnRefresh);

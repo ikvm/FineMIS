@@ -41,13 +41,15 @@ namespace FineMIS
     /// <summary>
     /// use session to store menus
     /// </summary>
-    public class SYS_MENU_Helper
+    public static class MenuHelper
     {
         public static List<SYS_MENU> Menus
         {
             get
             {
+                // 未登陆验证
                 if (!Current.IsAuthenticated) return new List<SYS_MENU>();
+                // 空session
                 if ((List<SYS_MENU>)Current.Session["__MENUS__"] == null) Current.Session["__MENUS__"] = InitMenus();
                 return (List<SYS_MENU>)Current.Session["__MENUS__"];
             }
@@ -66,11 +68,11 @@ namespace FineMIS
                 Sql.Builder
                     .LeftJoin("SYS_ROLE_MENU")
                     .On("SYS_MENU.Id = SYS_ROLE_MENU.MenuId")
-                    .Where("RoleId IN (@ids)", new { ids = Current.RoleIds.ToArray() })
+                    .Where("RoleId IN (@0)", Current.RoleIds.ToArray())
                     .Where("SYS_MENU.Active = @0", true)
                     .Where("SYS_ROLE_MENU.Active = @0", true)
                     .OrderBy("SortIndex ASC")
-                ).Distinct(new SYS_MENU_Comparer()).ToList();
+                ).Distinct(new MenuComparer()).ToList();
 
             ResolveMenuCollection(dbMenus, 0, 0, ref menus);
 
@@ -105,7 +107,7 @@ namespace FineMIS
     /// <summary>
     /// comparer of menus
     /// </summary>
-    public class SYS_MENU_Comparer : IEqualityComparer<SYS_MENU>
+    public class MenuComparer : IEqualityComparer<SYS_MENU>
     {
         public bool Equals(SYS_MENU x, SYS_MENU y)
         {
