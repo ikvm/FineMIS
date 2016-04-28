@@ -67,6 +67,10 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PetaPoco, Version=5.1.171.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PetaPoco.Core.Compiled.5.1.171\lib\net45\PetaPoco.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -304,10 +308,6 @@
     <ProjectReference Include="..\..\OutOfMemory\OutOfMemory\OutOfMemory.csproj">
       <Project>{a05f9722-a25d-453a-a8da-60dfb369c1b7}</Project>
       <Name>OutOfMemory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PetaPoco\PetaPoco\PetaPoco.csproj">
-      <Project>{33699753-151d-4100-8f12-9ae1aeb5c5bd}</Project>
-      <Name>PetaPoco</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
